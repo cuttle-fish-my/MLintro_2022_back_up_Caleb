@@ -1,0 +1,309 @@
+\documentclass{article}
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumerate}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage{amssymb}
+\usetikzlibrary{automata,positioning}
+
+%
+% Basic Document Settings
+%  
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName}
+\chead{\hmwkClass\ (\hmwkClassInstructor): \hmwkTitle}
+\rhead{\firstxmark}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{2pt}
+
+%
+% Create Problem Sections
+%
+
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+
+
+\newcommand{\hmwkTitle}{Homework 1}
+\newcommand{\hmwkDueDate}{Oct 10th, 2022}
+\newcommand{\hmwkClass}{Introduction to Machine Learing}
+\newcommand{\hmwkClassInstructor}{Professor Ziping Zhao}
+\newcommand{\hmwkAuthorName}{Bingnan Li}
+\newcommand{\hmwkAuthorID}{2020533092}
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate\ at 11:59pm}\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName}\\ \hmwkAuthorID}
+\date{}
+
+\renewcommand{\part}[1]{\textbf{\large Part \Alph{partCounter}}\stepcounter{partCounter}\\}
+
+%
+% Various Helper Commands
+%
+
+% Useful for algorithms
+\newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}
+
+% For derivatives
+\newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
+
+% For partial derivatives
+\newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
+
+% Integral dx
+\newcommand{\dx}{\mathrm{d}x}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\textbf{\large Solution}}
+
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Bias}{\mathrm{Bias}}
+\renewcommand{\b}[1]{\bm{#1}}
+\begin{document}
+
+\maketitle
+
+\pagebreak
+
+\begin{enumerate}
+    \item[1]
+    \begin{enumerate}
+    \setlength\parindent{2em}
+        \item[(a)] Prove that the correlation matrix is positive semidefinite:\newline
+        {\bf Proof:}\par Assume that $\b{A}$ is the $m\times m$ correlation matrix with corresponding coordinates $a_{ij}$, then for any $m\times 1$ column vector $\b{y}$ with corresponding coordinates $y_{i}$, we have 
+        \begin{align*}
+            \b{A} &= \E\left[\left(\frac{\b{x}-\b{\mu}}{\b{\sigma}}\right)\left(\frac{\b{x}-\b{\mu}}{\b{\sigma}}\right)^T\right]\\
+            \b{y^T}\b{A}\b{y} &= \b{y^T}\E\left[\left(\frac{\b{x}-\b{\mu}}{\b{\sigma}}\right)\left(\frac{\b{x}-\b{\mu}}{\b{\sigma}}\right)^T\right]\b{y}\\
+            &= \E\left[\b{y^T}\left(\frac{\b{x}-\b{\mu}}{\b{\sigma}}\right)\left(\frac{\b{x}-\b{\mu}}{\b{\sigma}}\right)^T\b{y}\right]\\
+            &= \E\left[\left|\left|\left(\frac{\b{x}-\b{\mu}}{\b{\sigma}}\right)^T\b{y}\right|\right|_2^2\right]\\
+            &\geq 0
+        \end{align*}
+        Therefore, the correlation matrix is positive semidefinite.
+        \item[(b)] Prove that if $x_{m}$ and $x_n$ are data points sampled from
+         the Gaussian distribution $\mathcal{N}(\mu, \sigma^2)$, then 
+         \[\E[x_mx_n]= \mu^2+I_{mn}\sigma^2\] where $I_{mn}=\left\{\begin{aligned}
+            1,\ m=n\\
+            0,\ m\neq n
+         \end{aligned}\right.$\newline
+        {\bf Proof}:\par
+        Given the properties of Gaussian distribution, we have\[\E[x]=\mu\quad \Var[x]=\sigma^2\]
+        \par Additionally, 
+        \begin{align*}
+            \Cov(x_m,x_n)&=\E[(x_m-\mu)(x_n-\mu)]\\
+            &=\int_{\mathbb{R}}\E[(x_m-\mu)(x_n-\mu)|x_m=x]p(x)dx\\
+            &=\left\{
+                \begin{aligned}
+                    &\int_{\mathbb{R}}(x-\mu)^2p(x)dx,\ &m=n \\
+                    &\int_{\mathbb{R}}(x-\mu)\E[x_n-\mu]p(x)dx,\ &m\neq n
+                \end{aligned}
+            \right.\\
+            &=\left\{
+                \begin{aligned}
+                    &\Var(x)=\sigma^2,\ &m=n \\
+                    &\int_{\mathbb{R}}(x-\mu)(\mu-\mu)p(x)dx=0,\ &m\neq n
+                \end{aligned}
+            \right.\\
+        \end{align*}
+        \par Moreover, we know that 
+        \[\Cov(x_m, x_n)=\E[x_mx_n]-\mu^2=\left\{
+            \begin{aligned}
+                \sigma^2, m=n\\
+                0, m\neq n
+            \end{aligned}
+        \right.\] 
+        Thus, \begin{align*}
+            \E[x_mx_n]=\Cov(x_m,x_n)+\mu^2=\left\{
+                \begin{aligned}
+                    \mu^2+\sigma^2, m=n\\
+                    \mu^2, m\neq n
+                \end{aligned}
+            \right.
+        \end{align*}
+        \item[(c)] Prove
+        \[P(C_i|A,B)=\frac{P(C_i,B|A)}{\sum_{i=1}^n P(C_i,B|A)}\]\newline
+        {\bf Proof:}\par
+        Define the sample space $S$, then $A,B\subset S$ and $\{C_i\}_{i=1}^n$ is a partition of $S$. Thus, we know that for any subset of $S$, say $D$, then we have
+        \[P(D) = \sum_{i=1}^n P(C_i,D)\]
+        \par Based on that, we have
+        \begin{align*}
+            P(C_i|A,B)&=\frac{P(C_i,A,B)}{P(A,B)}=\frac{P(C_i,B|A)P(A)}{P(B|A)P(A)}\\
+            &=\frac{P(C_i,B|A)}{P(B|A)}
+        \end{align*}
+        \par Since $B$ is a subset of $S$, then we have
+        \[P(B)=\sum_{i=1}^n P(C_i,B)\]
+        then we get
+        \begin{align*}
+            P(C_i|A,B)=\frac{P(C_i,B|A)}{\sum_{i=1}^n P(C_i, B|A)}
+        \end{align*}
+    \end{enumerate}
+    \item[2]
+    \begin{enumerate}
+    \setlength\parindent{2em}
+        \item[(a)]Derive the maximum likelihood estimate $\mu_{ML}$.\newline
+        {\bf Solution:}\par
+        Since $x_i\sim\mathcal{N}(\mu,\sigma^2)$, we have the likelihood function\[L(\mu|\mathcal{X})=P(\mathcal{X}|\mu)=\prod_{i=1}^N P(x_i|\mu)=\left(\sqrt{2\pi}\sigma\right)^{-N}e^{-\frac{1}{2}\sum_{i=1}^N \left(\frac{x_i-\mu}{\sigma}\right)^2}\]
+        and the log likelihood function
+        \[\mathcal{L}(\mu|\mathcal{X})=-N\log\sqrt{2\pi}\sigma-\frac{1}{2}\sum_{i=1}^N\left(\frac{x_i-\mu}{\sigma}\right)^2\]
+        Then 
+        \begin{align*}
+            \frac{\partial \mathcal{L}}{\partial \mu} &= \frac{1}{\sigma}\sum_{i=1}^N\frac{x_i-\mu}{\sigma}=0\\
+            &\Rightarrow \mu_{ML}=\hat{\mu}=\frac{1}{N}\sum_{i=1}^N x_i
+        \end{align*}
+        \item[(b)] Assume $\mu\sim \mathcal{N}(\mu_0, \sigma_0^2)$. Derive the maximum a posteriori estimate $\mu_{MAP}$.\newline
+        {\bf Solution:}\par
+        By definition, we have
+        \[\mu_{MAP}=\arg\max\limits_{\mu} P(\mu|\mathcal{X})=\arg\max\limits_{\mu} P(\mathcal{X}|\mu)P(\mu)=\arg\max\limits_{\mu} \left(\log P(\mathcal{X}|\mu)+\log P(\mu)\right)\]
+        \par Let $\mathcal{L}=\log P(\mathcal{X}|\mu)+\log P(\mu)$, then 
+        \begin{align*}
+            \mathcal{L}&=-N\log \sqrt{2\pi}\sigma-\frac{1}{2}\sum_{i=1}N\left(\frac{x_i-\mu}{\sigma}\right)^2-\log \sqrt{2\pi}\sigma_0-\frac{1}{2}\left(\frac{\mu-\mu_0}{\sigma_0}\right)^2\\
+            \frac{\partial \mathcal{L}}{\partial \mu} &= \frac{1}{\sigma^2}\left(\sum_{i=1}^N x_i-N\mu\right)-\frac{\mu-\mu_0}{\sigma_0^2}=0\\
+            &\Rightarrow \mu_{MAP}=\hat{\mu}=\frac{\sigma_0^2\sum_{i=1}^N x_i+\sigma^2\mu_0}{\sigma_0^2N+\sigma^2}
+        \end{align*}
+        \item[(c)] Show that the maximum a posteriori estimate tends to the maximum likelihood estimate when $N\to \infty$.\newline
+        {\bf Solution:}\par
+        \begin{align*}
+            \lim_{N\to\infty} \frac{\sigma_0^2\sum_{i=1}^N x_i+\sigma^2\mu_0}{\sigma_0^2N+\sigma^2} &= \lim_{N\to\infty} \frac{N\sigma_0^2}{N\sigma_0^2+\sigma^2}\frac{1}{N}\sum_{i=1}^Nx_t+\frac{\sigma^2}{N\sigma_0^2+\sigma^2}\mu_0\\
+            &= \lim_{N\to\infty} \frac{N\sigma_0^2}{N\sigma_0^2+\sigma^2}\mu_{ML}+\frac{\sigma^2}{N\sigma_0^2+\sigma^2}\mu_0\\
+            &= \mu_{ML}
+        \end{align*}
+        
+    \end{enumerate}
+    \setlength\parindent{2em}
+    \item[3] Show that if convex hulls of two sets of points intersect, these two sets are not linearly separable, and conversely that if they are linearly separable, their convex hulls do not intersect.\newline
+    {\bf Proof:}\par
+    First, two sets are linearly separable, then their convex hulls do not intersect:
+    \par Define $C(Y)=\left\{y|y=\sum_{i=1}^m\beta_iy_i,\beta_i\geq 0,\sum_{i=1}^m\beta_i=1\right\}$. Given that $X$ and $Y$ are linearly separable, then assume that there is a hyperplane that can linearly separate $X$ and $Y$, say $\exists \b{w}$ and a scalar $b$ s.t. $\forall \b{\xi_i}\in C(X),\b{\zeta _i}\in C(Y)$, we have $\b{w^T\xi_i}+b>0$ and $\b{w^T\zeta_i}+b<0$.
+    \par Based on that, we have
+    \begin{align*}
+        \b{w^T\xi_i}+b &= \b{w^T}\sum_{i=1}^n \theta_i\b{x_i} + b\\
+        &= \sum_{i=1}^n \b{w^T}\theta_i\b{x_i}+\sum_{i=1}^n \theta_i b\\
+        &= \sum_{i=1}^n \theta_i(\b{w^Tx_i}+b)
+    \end{align*}
+    Similarly, for $\zeta_i$, we have
+    \begin{align*}
+        \b{w^T\zeta_i}+b = \sum_{i=1}^m \beta_i(\b{w^Ty_i}+b)
+    \end{align*}
+    Then assume that $C(X)\cap C(Y)\neq \varnothing $, let $\b{z}$ be a point that both in $C(X)$ and $C(Y)$, we have 
+    \begin{align*}
+        \b{w^Tz}+b &= \sum_{i=1}^n \theta_i(\b{w^Tx_i}+b) > 0\\
+        &and\\
+        \b{w^Tz}+b &= \sum_{i=1}^m \beta_i(\b{w^Ty_i}+b) < 0
+    \end{align*}
+    which is a contradiction and proof done.
+    \par Then given that "if convex hulls of two sets of points intersect, these two sets are not linearly separable" is the Inverse Negative Proposition of the above one, thus this one is also true.
+    \item[4]
+    \begin{enumerate}
+    \setlength\parindent{2em}
+        \item[(a)]Show that the optimal solution $\mathcal{\bm{\beta_\star}}$ is given by:\[\b{\beta_\star}=\left(\b{X}^T\b{X}+\lambda \b{I}\right)^{-1}\b{X}^T\b{y}\]\newline
+        {\bf Proof:}\par
+        Let $\b{F}=||\b{y}-\b{X}\bm{\beta}||_2^2+\lambda||\b{\beta}||_2^2$, then 
+        \begin{align*}
+            \frac{\partial \b{F}}{\partial \b{\beta}} &=  \frac{\partial ||\b{y}-\b{X}\bm{\beta}||_2^2+\lambda||\b{\beta}||_2^2}{\partial \b{\beta}}\\
+            &= \frac{\partial (\b{y}-\b{X\beta})^T(\b{y}-\b{X\beta})}{\partial \b{\beta}}+\lambda\frac{\partial \b{\beta}^T\b{\beta}}{\partial \b{\beta}}\\
+            &=-2\b{X}^T(\b{y-X\beta})+2\lambda\b{\beta}=0\\
+            &\Rightarrow (\lambda \b{I}+\b{X^T X})\b{\beta}=\b{X^T y}
+        \end{align*}
+        Given that $\b{X^T X+}\lambda\b{I}$ is invertible, we have
+        \[\b{\beta_\star}=\left(\b{X}^T\b{X}+\lambda \b{I}\right)^{-1}\b{X}^T\b{y}\]
+        \item[(b)] Discuss the conditions on the matrix $\b{X}$ and $\lambda$ so that the matrix $\b{X^T X+}\lambda\b{I}$ is guaranteed to be invertible.\newline
+        {\bf Solution:}\par
+        Let $\b{A} = \left(\b{X^T X}+\right)\lambda \b{I}$, then we know that $\b{A}$ is a symmetric matrix. Next, for any non-zero vector $\b{v}$, we have 
+        \begin{align*}
+            \b{v^T A v} &= \b{v^TX^TXv}+\lambda \b{v^TIv}\\
+            &=||\b{Xv}||_2^2+\lambda||\b{v}||_2^2
+        \end{align*}
+        since $\b{v}$ is a non-zero vector, then $||\b{v}||_2^2 \neq 0$. Moreover, $\lambda > 0$, then 
+        \begin{align*}
+            \b{v^T A v} \geq \lambda||\b{v}||_2^2> 0
+        \end{align*}
+        Thus, $\b{A}$ is a positive definite matrix and $\b{A}$ is invertible.
+    \end{enumerate}
+    \item[5]    
+    \begin{enumerate}
+    \setlength\parindent{2em}
+        \item[(a)] Prove that if $f$ is a convex function, then $\mathcal{C}=\{x|f(x)\leq 0\}$ is a convex set.\newline
+        {\bf Proof:}\par
+        For $\forall \b{x_1, x_2}\in \mathcal{C}$, we can determine a line $l$ between $\b{x_1}$ and $\b{x_2}$, and $ \exists \b{x}\in l$, we can denote $\b{x}$ as 
+        \[\b{x}=\b{x_1}+t(\b{x_2}-\b{x_1})=(1-t)\b{x_1}+t\b{x_2}\]
+        Then, we have
+        \begin{align*}
+            f(\b{x})&=f((1-t)\b{x_1}+t\b{x_2})\\
+            &\leq (1-t)f(\b{x_1})+tf(\b{x_2})
+        \end{align*}
+        since $f(\b{x_1}),f(\b{x_2})\leq 0$ and $t\in[0,1]$, we know that
+        \[f(\b{x})\leq 0\]
+        which means for any points that lay in the line between $\b{x_1}$ and $\b{x_2}$, we know that $\b{x}\in \mathcal{C}$. Thus, $\mathcal{C}$ is a convex set.
+        \item[(b)] Prove that if $x$ is a random variable and $f$ is a convex function, then $f(\E[x])\leq \E[f(x)]$.\newline
+        {\bf Proof:}\par
+        If $x$ is a discrete random variable, then by the property of convex function, we know that for $x$ that only has 2 possible values, we have
+        \begin{align*}
+            f(\E[x]) &= f(p_1x_1+p_2x_2)\\
+            &\leq p_1f(x_1)+p_2f(x_2)=\E[f(x)]
+        \end{align*}
+        \par Then assume that inequality holds for $x$ that has $k$ possible values, then for $x$ that has $k+1$ possible values, we have
+        \begin{align*}
+            f(\E[x]) &= f(\sum_{i=1}^k p_ix_i + p_{k+1}x_{k+1})\\
+            &= f\left(\sum_{i=1}^k p_i\sum_{i=1}^k \frac{p_i x_i}{\sum_{i=1}^k p_i}+p_{k+1}x_{k+1}\right)\\
+            &\leq \sum_{i=1}^k p_i f\left(\sum_{i=1}^k \frac{p_i x_i}{\sum_{i=1}^k p_i}\right)+p_{k+1}f(x_{k+1})\\
+            &\leq \sum_{i=1}^k p_i\sum_{i=1}^k \frac{p_i x_i}{\sum_{i=1}^k p_i} f(x_i) +p_{k+1}f(x_{k+1})\\
+            &= \sum_{i=1}^{k+1}p_if(x_i)=\E[f(x)]
+        \end{align*}
+        \par If x is a continuous random variable(domain is $\mathbb{D}$), and $g(x)$ is the corresponding pdf, then 
+        \[\E[x]=\int_{\mathbb{D}}xg(x)dx=\lim_{||T||\to 0}\sum_{i=1}^{n}\xi_i g(\xi_i)\Delta x_i \]
+        where $T$ is a partition of domain such that $\mathbb{D}$ is divided into $n$ intervals, then denote $||T||=max(||intervals||)$.
+        \par Based on that, we have
+        \begin{align*}
+            f(\E[x]) &= f\left(\lim_{||T||\to 0}\sum_{i=1}^{n}\xi_i g(\xi_i)\Delta x_i\right)\\
+            &= \lim_{||T||\to 0}f\left(\sum_{i=1}^{n}\xi_i g(\xi_i)\Delta x_i\right)
+        \end{align*}
+        By definition, we have $\sum_{i=1}^n f(\xi_i)\Delta x_i = 1$.
+        Thus, by the discrete form of above proof, we have
+        \begin{align*}
+            f(\E[x])\leq \lim_{||T||\to 0} \sum_{i=1}^{n}g(\xi_i)\Delta x_i f(\xi_i) = \int_{\mathbb{D}}f(x)g(x)dx=\E[f(x)]
+        \end{align*}
+
+        
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}
