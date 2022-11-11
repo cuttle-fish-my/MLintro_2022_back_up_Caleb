@@ -262,13 +262,45 @@
             subject\ to\qquad & 0\leq\alpha_i^+\leq C,\ \forall i\\
             & 0\leq \alpha_i^-\leq C,\ \forall i
         \end{align*}
-        \item [(c)]
+        The prediction rule is let $\b{z}= \phi(\b{x})$ and $g(\b{z})=\b{w}^T\phi(\b{x})$ is the prediction result.
+        \item [(c)] Support Vectors\newline
+        {\bf Solution:}
+        \par The support vectors of this problem is the instances that lies on the outside of $\epsilon-tube$.
     \end{enumerate}
-    \item [3.]
+    \item [3.] 
     \begin{enumerate}
-        \item [(a)]
-        \item [(b)]
-        \item [(c)]
+        \setlength\parindent{2em}
+        \item [(a)] PCA v.s. LDA
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.9\textwidth]{"image/Q3_a.jpg"}
+        \end{figure}
+        \item [(b)] CCA
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.9\textwidth]{"image/Q3_b.jpg"}
+        \end{figure}
+        \item [(c)] PCA\newline
+        {\bf Solution:}
+        \par Let $\b{x}=\begin{bmatrix}
+            x_1\\
+            x_2
+        \end{bmatrix}$ and $\b{\mu}=\E[\b{x}]=\begin{bmatrix}
+            \E[x_1]\\\E[x_2]
+        \end{bmatrix}=\begin{bmatrix}
+            0\\0
+        \end{bmatrix}$, then $\Sigma=\E[(\b{x}-\b{\mu})(\b{x}-\b{\mu})^T]=\E[\b{x}\b{x}^T]=\begin{bmatrix}
+            \E[x_1^2] & \E[x_1x_2]\\
+            \E[x_1x_2] & \E[x_2^2]
+        \end{bmatrix} = \begin{bmatrix}
+            \frac{2}{3} & \frac{2}{3}\\
+            \frac{2}{3} & \frac{2}{3}
+        \end{bmatrix}$.
+        \par By solving eigen value, we have two eigen values of $\Sigma$, $\lambda_1 = \frac{4}{3}$ and $\lambda_2=0$, we choose the eigen corresponding to $\lambda_1$ as first principal component, which is $\b{u}=\begin{bmatrix}
+            1\\1
+        \end{bmatrix}$.
+        \par Then the projected coordinates of data are $(-1,-1)\to -2$, $(0,0)\to 0$ and $(1,1)\to 2$. Then variance of projected data is $\frac{4}{3}$
+
     \end{enumerate}
     \item [4.]
     \begin{enumerate}
