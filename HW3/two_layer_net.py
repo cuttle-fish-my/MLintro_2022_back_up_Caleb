@@ -1,4 +1,6 @@
 import numpy as np
+import torch
+import torch.autograd as autograd
 
 
 class TwoLayerNet(object):
@@ -32,7 +34,7 @@ class TwoLayerNet(object):
         - hidden_size: The number of neurons H in the hidden layer.
         - output_size: The number of classes C.
         """
-        np.random.seed(128) # Do not change this
+        np.random.seed(128)  # Do not change this
         self.params = {}
         self.params['W1'] = std * np.random.randn(input_size, hidden_size)
         self.params['b1'] = np.zeros(hidden_size)
@@ -76,13 +78,24 @@ class TwoLayerNet(object):
         #############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        # pass
 
+        W1_tensor = torch.tensor(W1, requires_grad=True, dtype=torch.float32)
+        b1_tensor = torch.tensor(b1, requires_grad=True, dtype=torch.float32)
+        W2_tensor = torch.tensor(W2, requires_grad=True, dtype=torch.float32)
+        b2_tensor = torch.tensor(b2, requires_grad=True, dtype=torch.float32)
+        X_tensor = torch.tensor(X, requires_grad=True, dtype=torch.float32)
+        scores = torch.matmul(torch.relu(torch.matmul(X_tensor, W1_tensor) + b1_tensor), W2_tensor) + b2_tensor
+        score_tensor = torch.softmax(scores, dim=1, dtype=torch.float32)
+        label = torch.eye(score_tensor.shape[1])[y]
+
+        # label_tensor = torch.tensor(label, requires_grad=True, dtype=torch.float32)
+        label_tensor = label.clone().detach().requires_grad_(True)
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
         # If the targets are not given then jump out, we're done
         if y is None:
-            return scores
+            return scores.detach().numpy()
 
         # Compute the loss
         loss = None
@@ -94,7 +107,8 @@ class TwoLayerNet(object):
         #############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        # pass
+        # convert label y into one-hot label
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -107,7 +121,17 @@ class TwoLayerNet(object):
         #############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        # pass
+
+        loss_tensor = -torch.trace(torch.matmul(label_tensor, torch.log(score_tensor).t())) / N + reg / 2 * (
+                torch.linalg.norm(W1_tensor, ord='fro') ** 2 + torch.linalg.norm(W2_tensor, ord='fro') ** 2)
+
+        grads['W2'] = autograd.grad(loss_tensor, W2_tensor, retain_graph=True)[0].numpy()
+        grads['b2'] = autograd.grad(loss_tensor, b2_tensor, retain_graph=True)[0].numpy()
+        grads['W1'] = autograd.grad(loss_tensor, W1_tensor, retain_graph=True)[0].numpy()
+        grads['b1'] = autograd.grad(loss_tensor, b1_tensor, retain_graph=True)[0].numpy()
+
+        loss = loss_tensor.detach().numpy()
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -152,7 +176,10 @@ class TwoLayerNet(object):
             #########################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-            pass
+            # pass
+            idx = np.random.randint(0, num_train, size=batch_size)
+            X_batch = X[idx]
+            y_batch = y[idx]
 
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -168,7 +195,11 @@ class TwoLayerNet(object):
             #########################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-            pass
+            # pass
+            self.params['W1'] -= learning_rate * grads['W1']
+            self.params['b1'] -= learning_rate * grads['b1']
+            self.params['W2'] -= learning_rate * grads['W2']
+            self.params['b2'] -= learning_rate * grads['b2']
 
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -187,9 +218,9 @@ class TwoLayerNet(object):
                 learning_rate *= learning_rate_decay
 
         return {
-          'loss_history': loss_history,
-          'train_acc_history': train_acc_history,
-          'val_acc_history': val_acc_history,
+            'loss_history': loss_history,
+            'train_acc_history': train_acc_history,
+            'val_acc_history': val_acc_history,
         }
 
     def predict(self, X):
@@ -214,8 +245,10 @@ class TwoLayerNet(object):
         ###########################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        pass
+        # pass
+        y_pred = self.loss(X)
+        # print(f"y_pred.shape {y_pred.shape}")
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
-        return y_pred
+        return np.argmax(y_pred, axis=1)
