@@ -70,7 +70,7 @@ class TwoLayerNet(object):
         N, D = X.shape
 
         # Compute the forward pass
-        scores = None
+        scores_tensor = None
         #############################################################################
         # TODO: Perform the forward pass, computing the class scores for the input. #
         # Store the result in the scores variable, which should be an array of      #
@@ -85,17 +85,13 @@ class TwoLayerNet(object):
         W2_tensor = torch.tensor(W2, requires_grad=True, dtype=torch.float32)
         b2_tensor = torch.tensor(b2, requires_grad=True, dtype=torch.float32)
         X_tensor = torch.tensor(X, requires_grad=True, dtype=torch.float32)
-        scores = torch.matmul(torch.relu(torch.matmul(X_tensor, W1_tensor) + b1_tensor), W2_tensor) + b2_tensor
-        score_tensor = torch.softmax(scores, dim=1, dtype=torch.float32)
-        label = torch.eye(score_tensor.shape[1])[y]
+        scores_tensor = torch.matmul(torch.relu(torch.matmul(X_tensor, W1_tensor) + b1_tensor), W2_tensor) + b2_tensor
 
-        # label_tensor = torch.tensor(label, requires_grad=True, dtype=torch.float32)
-        label_tensor = label.clone().detach().requires_grad_(True)
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
         # If the targets are not given then jump out, we're done
         if y is None:
-            return scores.detach().numpy()
+            return scores_tensor.detach().numpy()
 
         # Compute the loss
         loss = None
@@ -108,7 +104,10 @@ class TwoLayerNet(object):
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
         # pass
-        # convert label y into one-hot label
+
+        CELoss = torch.nn.CrossEntropyLoss()
+        loss_tensor = CELoss(scores_tensor, torch.tensor(y)) + reg * (
+                    torch.sum(W1_tensor.pow(2)) + torch.sum(W2_tensor.pow(2)))
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -122,9 +121,6 @@ class TwoLayerNet(object):
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
         # pass
-
-        loss_tensor = -torch.trace(torch.matmul(label_tensor, torch.log(score_tensor).t())) / N + reg / 2 * (
-                torch.linalg.norm(W1_tensor, ord='fro') ** 2 + torch.linalg.norm(W2_tensor, ord='fro') ** 2)
 
         grads['W2'] = autograd.grad(loss_tensor, W2_tensor, retain_graph=True)[0].numpy()
         grads['b2'] = autograd.grad(loss_tensor, b2_tensor, retain_graph=True)[0].numpy()
@@ -247,7 +243,6 @@ class TwoLayerNet(object):
 
         # pass
         y_pred = self.loss(X)
-        # print(f"y_pred.shape {y_pred.shape}")
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 

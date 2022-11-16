@@ -13,6 +13,8 @@
 \usepackage{bm}
 \usepackage{amssymb}
 \usepackage{tikz}  
+\usepackage{optidef}
+\usepackage{pdfpages}
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{automata,positioning}
 
@@ -161,7 +163,7 @@
             and the corresponding KKT conditions are
             \begin{align*}
                 \left\{\begin{aligned}
-                    &\frac{\partial \mathcal{\lambda}}{\partial \b{\alpha}} = \b{H\alpha}-\b{1}-\b{\lambda}+v\b{r}=0\\
+                    &\PARTIAL{\mathcal{L}}{\b{\alpha}} = \b{H\alpha}-\b{1}-\b{\lambda}+v\b{r}=0\\
                     &\b{\alpha^T r} = 0, \b{\alpha}\geq \b{0}\\
                     &\b{\lambda} \geq 0\\
                     &\b{\alpha^T \lambda} = 0
@@ -265,9 +267,9 @@
         The prediction rule is let $\b{z}= \phi(\b{x})$ and $g(\b{z})=\b{w}^T\phi(\b{x})$ is the prediction result.
         \item [(c)] Support Vectors\newline
         {\bf Solution:}
-        \par The support vectors of this problem is the instances that lies on the outside of $\epsilon-tube$.
+        \par The support vectors of this problem is the instances that lies {\bf on and outside} $\epsilon-tube$.
     \end{enumerate}
-    \item [3.] 
+    \item [3.] [Dimension Reduction]
     \begin{enumerate}
         \setlength\parindent{2em}
         \item [(a)] PCA v.s. LDA
@@ -298,18 +300,65 @@
         \end{bmatrix}$.
         \par By solving eigen value, we have two eigen values of $\Sigma$, $\lambda_1 = \frac{4}{3}$ and $\lambda_2=0$, we choose the eigen corresponding to $\lambda_1$ as first principal component, which is $\b{u}=\begin{bmatrix}
             1\\1
+        \end{bmatrix}\Rightarrow\b{w}=\begin{bmatrix}
+            \frac{\sqrt{2}}{2}\\\frac{\sqrt{2}}{2}
         \end{bmatrix}$.
-        \par Then the projected coordinates of data are $(-1,-1)\to -2$, $(0,0)\to 0$ and $(1,1)\to 2$. Then variance of projected data is $\frac{4}{3}$
+        \par Then the projected coordinates of data are $(-1,-1)\to -\sqrt{2}$, $(0,0)\to 0$ and $(1,1)\to \sqrt{2}$. Then variance of projected data is $\frac{4}{3}$
 
     \end{enumerate}
-    \item [4.]
+    \item [4.][Dimension Reduction]
     \begin{enumerate}
-        \item [(a)]
-        \item [(b)]
-        \item [(c)]
+        \item [(a)] PCA
+        {\bf Proof:}
+        \par The optimization problem is as following
+        \begin{maxi}|l|
+            {\b{w}_1}{\b{w}_1^T\b{\Sigma}\b{w}_1}{}{}
+            \addConstraint{||\b{w}_1||=1}{}
+        \end{maxi}
+        Then the Lagrangian fucntion is 
+        \[\mathcal{L}(\b{w}_1,\alpha)=-\b{w}_1^T\b{\Sigma}\b{w}_1+\alpha(\b{w}_1^T\b{w}_1-1)\]
+        then
+        \begin{align*}
+            \PARTIAL{\mathcal{L}}{\b{w}_1}=-2\b{\Sigma}\b{w}_1+2\alpha\b{w}_1=0\Rightarrow\b{\Sigma}\b{w}_1^\star=\alpha^\star\b{w}_1^\star
+        \end{align*}
+        and 
+        \begin{align*}
+            (\b{w}_1^\star)^T\b{\Sigma}\b{w}_1^\star = \alpha^\star(\b{w}_1^\star)^T\b{w}_1^\star=\alpha^\star
+        \end{align*}
+        In order to maximize $\b{w}_1^T\b{\Sigma}\b{w}_1$, we need to choose the maximum eigen value $\alpha$ of $\b{\Sigma}$. Thus, $\b{w}_1$ is the principal component.
+        \item [(b)] PCA vs LDA
+        {\bf Solution:}
+        \par LDA is a method that aims to find a projection direction such that the projected data have the maximum distances between classes and minimum variance within classes.
+        \begin{enumerate}
+            \item [1.] Similarity
+            \par Both of LDA and PCA solve the same class of optimization problem (Generalized Rayleigh quotient or eigenvalue problem).
+            \item [2.] Difference
+            \par PCA is an un-supervised method while LDA is a supervised method. Moreover, PCA aims to maximize the variance of projected data but LDA aims to maximize the distance between difference classes and minimize the variance of each classes at the same time.
+        \end{enumerate}
+        \item [(c)] show that $\b{w_1}$ minimizes the reconstruction error $||\b{X-Xwx}^T||^2_F$ for any $\b{w}$ satifisying $||\b{w}||_2=1$.\newline
+        {\bf Proof:}
+        \par In order to minimize reconstruction error, we need to rewrite the reconstruction error
+        \begin{align*}
+            ||\b{X}-\b{Xww}^T||^2_F&=\sum_{i=1}^N||\b{x}_i-\b{ww}^T\b{x}_i||^2\\
+            &=\sum_{i=1}^N (\b{x}_i-\b{ww}^T\b{x}_i)^T(\b{x}_i-\b{ww}^T\b{x}_i)\\
+            &=\sum_{i=1}^N \b{x_i}^T\b{x}_i-2\b{x}_i^T\b{ww}^T\b{x}_i+\b{x}_i^T\b{ww}^T\b{ww}^T\b{x}_i\\
+            &=\sum_{i=1}^N \b{x_i}^T\b{x}_i-2(\b{w}^T\b{x}_i)^2+||\b{w}||_2^2(\b{w}^T\b{x}_i)^2
+        \end{align*}
+        Given that $||\b{w}||_2^2=1$, we have 
+        \begin{align*}
+            ||\b{X}-\b{Xww}^T||^2_F&=\sum_{i=1}^N \b{x_i}^T\b{x}_i-(\b{w}^T\b{x}_i)^2
+        \end{align*}
+        Thus, minimizing reconstruction error is equivalent to maximizing $\sum_{i=1}^N (\b{w}^T\b{x}_i)^2$. Moreover, since $\b{X}$ is a cnetered sample matrix, we know that $\E[\b{x}_i]=0$. Therefore, we have 
+        \begin{align*}
+            \E[\b{w}^T\b{x}_i]&=0\\
+            \Var(\b{w}^T\b{x}_i)&=\E[(\b{w}^T\b{x}_i)^2]-\E[\b{w}^T\b{x}_i]\\
+            &=\E[(\b{w}^T\b{x}_i)^2]\\
+            &=\frac{1}{N} \sum_{i=1}^N (\b{w}^T\b{x}_i)^2
+        \end{align*}
+        Thus, we know that maximizing $\sum_{i=1}^N (\b{w}^T\b{x}_i)^2$ is equivalent to maximizing $\Var(\b{w}^T\b{x}_i)$, which is exactly same to PCA problem, so their solutions are consistent.
     \end{enumerate}
+
+    
 \end{enumerate}
-\pagebreak
-
-
+\includepdfmerge{HW3-Coding.pdf,1-5}
 \end{document}
