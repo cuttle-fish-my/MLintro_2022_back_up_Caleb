@@ -187,18 +187,62 @@
             \[\PARTIAL{}{\pi_i}\left[\sum_l\sum_ih_i^{(l)}\log{\pi_i}-\lambda\left(\sum_i\pi_i-1\right)\right]=0\]
             And we get 
             \[\pi_i=\frac{\sum_lh_i^{(l)}}{N}\]
+            Then the first term of $\mathcal{Q}$ does not depend on $\b{\mu_i},\Sigma_i$. Hence, the problem for $\b{\mu_i},\Sigma_i$ is 
+            \begin{maxi*}|l|
+                {\{\b{\mu}_i\},\{\Sigma_i\}}{\sum_l\sum_ih_i^{(l)}\log{\mathcal{N}(\b{x}_l|\b{\mu_i,\Sigma_i})}}{}{}
+            \end{maxi*}
+            By solving 
+            \[\PARTIAL{}{\mu_i}\left[\sum_l\sum_ih_i^{(l)}\log{\mathcal{N}(\b{x}_l|\b{\mu_i,\Sigma_i})}\right]=0\]
+            and 
+            \[\PARTIAL{}{\Sigma_i}\left[\sum_l\sum_ih_i^{(l)}\log{\mathcal{N}(\b{x}_l|\b{\mu_i,\Sigma_i})}\right]=0\]
+            we get 
+            \[\b{\mu}_i^{t+1}=\frac{\sum_lh_i^{(l)}\b{x}_l}{\sum_lh_i^{(l)}}\]
+            and 
+            \[\b{\Sigma}_i^{t+1}=\frac{\sum_lh_i^{(l)}(\b{x}_l-\b{\mu}_i^{t+1})(\b{x}_l-\b{\mu}_i^{t+1})^T}{\sum_lh_i^{(l)}}\]
 	      \end{enumerate}
 	\item [3.] [\textit{Nonparametric Density Estimation}]
 	      \begin{enumerate}
 		      \setlength\parindent{2em}
-		      \item Expression of $\hat{p}(x)$.
-		      \item Expression of $L'(h)$ based on the histogram estimator $\hat{p}(x)$.
-		      \item $h$ that minimizes $L'(h)$.
+		      \item Expression of $\hat{p}(x)$.\newline
+		      {\bf Proof:}
+          \par By definition, the histogram estimator is defined as following:
+          \[\hat{p}(x)=\frac{\#\{x^{(l)}\ in\ the\ same\ bin\ as\ x\}}{nh}=\frac{\#\left\{x^{(l)}\in\left[\left\lfloor{\frac{x}{h}}\right\rfloor h,\left\lceil{\frac{x}{h}}\right\rceil h\right)\right\}}{nh}\]
+		      \item Expression of $L'(h)$ based on the histogram estimator $\hat{p}(x)$.\newline
+		      {\bf Proof:}
+		      \par First, for the first term of $L'$, we can split the integral by bins:
+          \begin{align*}
+            \int_0^1\hat{p}^2(x)dx &= \sum_{j=0}^{\lfloor\frac{1}{h}\rfloor}\int_{jh}^{(j+1)h}\frac{\#^2\left\{x^{(l)}\in\left[jh, (j+1)h\right)\right\}}{n^2h^2}dx\\
+            &= \frac{\sum_{j=0}^{\lfloor\frac{1}{h}\rfloor}\#^2\left\{x^{(l)}\in\left[jh, (j+1)h\right)\right\}}{n^2h}
+          \end{align*}
+          For the second term of $L'$, we can rewrite it as following:
+          \begin{align*}
+            \frac{2}{n}\sum_{i=1}^n\hat{p}(x_i) &= \frac{2}{n}\sum_{i=1}^n\frac{\#\left\{x^{(l)}\in\left[\left\lfloor{\frac{x}{h}}\right\rfloor h,\left\lceil{\frac{x}{h}}\right\rceil h\right)\right\}}{nh}\\
+            &= \frac{2\sum_{j=0}^{\lfloor\frac{1}{h}\rfloor}\#^2\left\{x^{(l)}\in\left[jh, (j+1)h\right)\right\}}{n^2h}
+          \end{align*}
+          Hence, we have
+          \[L'(h)=\int_0^1\hat{p}^2(x)dx-\frac{2}{n}\sum_{i=1}^n\hat{p}(x_i)=-\frac{\sum_{j=0}^{\lfloor\frac{1}{h}\rfloor}\#^2\left\{x^{(l)}\in\left[jh, (j+1)h\right)\right\}}{n^2h}\]
+		      \item $h$ that minimizes $L'(h)$.\newline
+		      {\bf Proof:}
+          \par 
 	      \end{enumerate}
 	\item [4.] [Nonparametric Regression]
 	      \begin{enumerate}
 		      \setlength\parindent{2em}
-		      \item Estimated output $\hat{y}$ and is linear regression a linear smoother?
+		      \item Estimated output $\hat{y}$ and is linear regression a linear smoother?\newline
+		      {\bf Solution:}
+          \par Given that the least squares estimate for $\b{w}$ is 
+          \[\b{w}^*=\left(H^TH\right)^{-1}H^TY\]
+          we have the following estimated output $\hat{y}$
+          \begin{align*}
+            \hat{y} &= (\b{w}^*)^T\cdot\b{h(x)}\\
+            &= \left[\left(H^TH\right)^{-1}H^TY\right]^T\b{h(x)}\\
+            &= Y^TH\left(H^TH\right)^{-1}\b{h(x)}\\
+            &= \left[H\left(H^TH\right)^{-1}\b{h(x)}\right]^TY\\
+            &= \b{h(x)}^T\left(H^TH\right)^{-1}H^TY\\
+            &\Rightarrow\\
+            \b{l(x)} &= H\left(H^TH\right)^{-1}\b{h(x)}
+          \end{align*}
+          Hence, linear regression is a linear smoother.
 		      \item In kernel regression, if we use kernel $K(x_i,x)=exp\left\{\frac{-||x_i-x||^2}{2\sigma^2}\right\}$, given an input $x$, please derive the estimated output $\hat{y}$. Furthermore, is this kernel regression a linear smoother?
 	      \end{enumerate}
 \end{enumerate}
