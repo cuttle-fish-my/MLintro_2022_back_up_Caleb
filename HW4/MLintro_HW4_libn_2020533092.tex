@@ -1,0 +1,134 @@
+\documentclass{article}
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+\usepackage{enumerate}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage{amssymb}
+\usepackage{tikz}  
+\usepackage{optidef}
+\usepackage{pdfpages}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{automata,positioning}
+
+%
+% Basic Document Settings
+%  
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName}
+\rhead{\hmwkClass\ (\hmwkClassInstructor): \hmwkTitle}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{2em}
+
+%
+% Create Problem Sections
+%
+
+
+% \setcounter{secnumdepth}{0}
+% \newcounter{partCounter}
+% \newcounter{homeworkProblemCounter}
+% \setcounter{homeworkProblemCounter}{1}
+
+
+\newcommand{\hmwkTitle}{Homework IV}
+\newcommand{\hmwkDueDate}{Dec 7th, 2022}
+\newcommand{\hmwkClass}{Introduction to Machine Learing}
+\newcommand{\hmwkClassInstructor}{Professor Ziping Zhao}
+\newcommand{\hmwkAuthorName}{Bingnan Li}
+\newcommand{\hmwkAuthorID}{2020533092}
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate\ at 11:59pm}\\
+    \vspace{0.1in}\large{\textit{\hmwkClassInstructor}}
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName}\\ \hmwkAuthorID}
+\date{}
+
+% \renewcommand{\part}[1]{\textbf{\large Part \Alph{partCounter}}\stepcounter{partCounter}\\}
+
+%
+% Various Helper Commands
+%
+
+% Useful for algorithms
+\newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}
+
+% For derivatives
+\newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
+
+% For partial derivatives
+\newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
+
+% Integral dx
+\newcommand{\dx}{\mathrm{d}x}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\textbf{\large Solution}}
+
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Bias}{\mathrm{Bias}}
+\renewcommand{\b}[1]{\bm{#1}}
+\newcommand{\PARTIAL}[2]{\frac{\partial #1}{\partial #2}}
+\begin{document}
+
+\maketitle
+\pagebreak
+
+\begin{enumerate}
+    \item [1.] [\textit{Clustering and Mixture Models}]
+    \begin{enumerate}
+        \item [(a)] K-means algorithm.
+        \item [(b)] Cluster the samples into 2 clusters.
+    \end{enumerate}
+    \item [2.] [\textit{Clustering and Mixture Models}]
+    \begin{enumerate}
+        \item Advantages of GMM and Why it can be used for clustering.
+        \item Estimate the parameters of the GMM.
+    \end{enumerate}
+    \item [3.] [\textit{Nonparametric Density Estimation}]
+    \begin{enumerate}
+        \item Expression of $\hat{p}(x)$.
+        \item Expression of $L'(h)$ based on the histogram estimator $\hat{p}(x)$.
+        \item $h$ that minimizes $L'(h)$.
+    \end{enumerate}
+    \item [4.] [Nonparametric Regression]
+    \begin{enumerate}
+        \item Estimated output $\hat{y}$ and is linear regression a linear smoother?
+        \item In kernel regression, if we use kernel $K(x_i,x)=exp\left\{\frac{-||x_i-x||^2}{2\sigma^2}\right\}$, given an input $x$, please derive the estimated output $\hat{y}$. Furthermore, is this kernel regression a linear smoother?
+    \end{enumerate}
+\end{enumerate}
+% \includepdfmerge{HW3-Coding.pdf,1-5}
+\end{document}
