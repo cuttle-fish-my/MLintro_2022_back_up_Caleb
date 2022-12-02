@@ -188,7 +188,7 @@
               Therefore, we have 
               \begin{align*}
                 h_i^{(l)} &= \frac{P(x^{(l)}|\mathcal{G}_i,\b{\phi}^t)\pi_i}{\sum_jP(x^{(l)}|\mathcal{G}_j,\b{\phi}^t)\pi_j}\\
-                &= \frac{|\Sigma_i|^{-\frac{1}{2}}\exp{[-\frac{1}{2}(\b{x_l}-\b{\mu_i})^T(\Sigma)^{-1}(\b{x_l}-\b{\mu_i})]\pi_i}}{\sum_{j=1}^K|\Sigma_j|^{-\frac{1}{2}}\exp{[-\frac{1}{2}(\b{x_l}-\b{\mu_j})^T(\Sigma)^{-1}(\b{x_l}-\b{\mu_j})]\pi_j}}\\
+                &= \frac{|\Sigma_i|^{-\frac{1}{2}}\exp{[-\frac{1}{2}(\b{x_l}-\b{\mu_i})^T(\Sigma_i)^{-1}(\b{x_l}-\b{\mu_i})]\pi_i}}{\sum_{j=1}^K|\Sigma_j|^{-\frac{1}{2}}\exp{[-\frac{1}{2}(\b{x_l}-\b{\mu_j})^T(\Sigma_j)^{-1}(\b{x_l}-\b{\mu_j})]\pi_j}}\\
                 &= \frac{\mathcal{N}(\b{x}_l|\b{\mu_i,\Sigma_i})\pi_i}{\sum_{j=1}^K\mathcal{N}(\b{x}_l|\b{\mu_j,\Sigma_j})\pi_j}
               \end{align*}
               and 
@@ -315,5 +315,5 @@
           Hence, this kernel regression is a linear smoother.
 	      \end{enumerate}
 \end{enumerate}
-% \includepdfmerge{HW3-Coding.pdf,1-5}
+\includepdfmerge{HW4-Coding.pdf,1-9}
 \end{document}
