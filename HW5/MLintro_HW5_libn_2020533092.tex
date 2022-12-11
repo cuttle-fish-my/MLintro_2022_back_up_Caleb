@@ -199,9 +199,36 @@
             \item [(ii.)] The solution $\b{W}$ from (a) can be taken as the same as $\b{A}_2^\star$.
         \end{enumerate}
     \end{enumerate}
-    \item [3.] [Ensemble Learning] Suppose there are $L$ independent two-class classifiers used for simple
-    voting and the output of classifier $j\ (j = 1\cdots L)$ is denoted as $d_j$. From the point of view that the mean squared error of an estimator can be decomposed into the bias part and the variance part, explain why
-    increasing $L$ can lead to an increase in classification accuracy.
+    \item [3.] [Ensemble Learning] Suppose there are $L$ independent two-class classifiers used for simple voting and the output of classifier $j\ (j = 1\cdots L)$ is denoted as $d_j$. From the point of view that the mean squared error of an estimator can be decomposed into the bias part and the variance part, explain why increasing $L$ can lead to an increase in classification accuracy.\newline
+    {\bf Proof:}
+    \par By the definition of MSE, we get
+    \begin{align*}
+        MSE(\hat{y}) &= \E[(\hat{y}-y)^2] = \E[(\hat{y}-\E[\hat{y}]+\E[\hat{y}]-y)^2]\\
+        &= \E[(\hat{y}-\E[\hat{y}])^2+2(\hat{y}-\E[\hat{y}])(\E[\hat{y}]-y)+(\E[\hat{y}]-y)^2]\\
+        &= \E[(\hat{y}-\E[\hat{y}])^2] + 2\E[(\hat{y}-\E[\hat{y}])]\E[(\E[\hat{y}]-y)] + \E[(\E[\hat{y}]-y)^2]\\
+        &= \E[(\hat{y}-\E[\hat{y}])^2] + 2(\E[\hat{y}]-\E[\hat{y}])\E[(\E[\hat{y}]-y)] + (\E[\hat{y}]-y)^2\\
+        &= \E[(\hat{y}-\E[\hat{y}])^2] + (\E[\hat{y}]-y)^2\\
+        &= \Var(\hat{y}) + \Bias^2(\hat{y},y)
+    \end{align*}
+    Then, for the second term of the equation above, we get
+    \begin{align*}
+        \Bias^2(\hat{y},y)&\propto \Bias(\hat{y}, y)\\
+        &= \E[\hat{y}]-y\\
+        &\propto \E[\hat{y}]\\
+        &= \E\left[\frac{1}{L}\sum_{j}d_j\right]\\
+        &\geq \frac{1}{L}\times L\min_{j}\{\E[d_j]\}\\
+        &= \min_j\{\E[d_j]\}
+    \end{align*}
+    which means that the Bias term won't change as $L$ gets larger.
+    \par As for the first term, we get
+    \begin{align*}
+        \Var(\hat{y}) &= \Var\left(\frac{1}{L}\sum_{j}d_j\right)\\
+        &= \frac{1}{L^2}\Var\left(\sum_{j}d_j\right)\\
+        &\leq \frac{1}{L^2}\times L\max_j\left(\Var(d_j)\right)\\
+        &= \frac{1}{L} \max_j\{\Var(d_j)\}
+    \end{align*}
+    which means that the Variance term will get smaller when $L$ gets larger.
+    \par In conclusion, $MSE(\hat{y})$ will get smaller as $L$ gets larger, so the classification will be more accurate. 
     \item [4.] [Model Assessment and Selection] Suppose we carry out a $K$-fold cross-validation on a dataset
     and obtain the classification error rates $\{p_i\}_{i=1}^K$, describe the steps of a one-sided $t$ test on testing the null
     hypothesis $H_0$ that the classifier has error percentage $p_0$ or less at a significance level $\alpha$.
