@@ -5,14 +5,13 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amsfonts}
-\usepackage{tikz}
 \usepackage[plain]{algorithm}
 \usepackage{algpseudocode}
 \usepackage{enumerate}
 \usepackage{mathrsfs}
 \usepackage{bm}
 \usepackage{amssymb}
-\usepackage{tikz}  
+\usepackage{tikz}
 \usepackage{optidef}
 \usepackage{pdfpages}
 \usetikzlibrary{arrows.meta}
@@ -54,7 +53,7 @@
 
 \newcommand{\hmwkTitle}{Homework V}
 \newcommand{\hmwkDueDate}{Dec 20th, 2022}
-\newcommand{\hmwkClass}{Introduction to Machine Learing}
+\newcommand{\hmwkClass}{Introduction to Machine Learning}
 \newcommand{\hmwkClassInstructor}{Professor Ziping Zhao}
 \newcommand{\hmwkAuthorName}{Bingnan Li}
 \newcommand{\hmwkAuthorID}{2020533092}
@@ -104,136 +103,146 @@
 \newcommand{\PARTIAL}[2]{\frac{\partial #1}{\partial #2}}
 \begin{document}
 
-\maketitle
-\pagebreak
+    \maketitle
+    \pagebreak
 
-\begin{enumerate}
-	\setlength\parindent{2em}
-    \item [1.] [{Deep Learning Models}]
     \begin{enumerate}
-	    \setlength\parindent{2em}
-        \item [(a)] Consider a 3D convolution layer. Suppose the input size is $32 \times 32 \times 3$ (width, height, depth) and we use ten $5 \times 5$(width, height) kernels to convolve with it. Set stride = 1 and pad = 2. What is the output size? Let the bias for each kernel be a scalar, how many parameters do we have in this layer?\newline
-        {\bf Solution:}
-        \par The input data shape is \[[C_{in},D_{in},H_{in},W_{in}] = [1, 3, 32, 32]\] and the kernel size is \[[C_{out}, D_{kernel}, H_{kernel}, w_{kernel}] = [10, 3, 5, 5]\]
-        Then by the formula, we have output data with a shape
-        \[[C_{out}, D_{out}, H_{out}, W_{out}]\]
-        and 
-        \begin{align*}
-                D_{out} &= \frac{D_{in}+2\times pad-(D_{kernel}-1)-1}{stride}+1=5\\
+        \setlength\parindent{2em}
+        \item [1.] [{Deep Learning Models}]
+        \begin{enumerate}
+            \setlength\parindent{2em}
+            \item [(a)] Consider a 3D convolution layer.
+            Suppose the input size is $32 \times 32 \times 3$ (width, height, depth) and we use ten $5 \times 5$ (width, height) kernels to convolve with it.
+            Set stride = 1 and pad = 2.
+            What is the output size?
+            Let the bias for each kernel be a scalar, how many parameters do we have in this layer?\newline
+            {\bf Solution:}
+            \par The input data shape is \[[C_{in},D_{in},H_{in},W_{in}] = [1, 3, 32, 32]\] and the kernel size is \[[C_{out}, D_{kernel}, H_{kernel}, w_{kernel}] = [10, 3, 5, 5]\]
+            Then by the formula, we have output data with a shape
+            \[[C_{out}, D_{out}, H_{out}, W_{out}]\]
+            and
+            \begin{align*}
+                D_{out} &= \frac{D_{in}+2\times pad-(D_{kernel}-1)-1}{stride}+1=1\\
                 H_{out} &= \frac{H_{in}+2\times pad-(H_{kernel}-1)-1}{stride}+1=32\\
                 W_{out} &= \frac{W_{in}+2\times pad-(W_{kernel}-1)-1}{stride}+1=32\\
-        \end{align*}
-        \par Thus, the output size is $[C_{out}, D_{out}, H_{out}, W_{out}]=[10,5,32,32]$
-        \par Moreover, the total number of parameters is 
-        \[\#\{parameters\}=\#\{parameters\ in\ kernel\}+\#\{biases\} = 5\times 5\times 3\times 10 + 10=760\]
-        \item [(b)] The convolution layer is followed by a max pooling layer with $2 \times 2$ (width, height) filter and stride = 2. What is the output size of the pooling layer? How many parameters do we have in the pooling layer?\newline
-        {\bf Solution:}
-        \par The input data shape is 
-        \[[C_{in}, D_{in}, H_{in}, W_{in}]=[10,5,32,32]\]
-        and the kernel shape is 
-        \[[C_{out}, D_{kernel}, H_{kernel}, W_{kernel}] = [10,5,2,2]\]
-        Then by the formula, we have output data with a shape
-        \[[C_{out}, D_{out}, H_{out}, W_{out}]\]
-        and 
-        \begin{align*}
+            \end{align*}
+            \par Thus, the output size is $[C_{out}, D_{out}, H_{out}, W_{out}]=[10,1,32,32]$
+            \par Moreover, the total number of parameters is
+            \[\#\{parameters\}=\#\{parameters\ in\ kernel\}+\#\{biases\} = 5\times 5\times 1\times 10 + 10=260\]
+            \item [(b)] The convolution layer is followed by a max pooling layer with $2 \times 2$ (width, height) filter and stride = 2. What is the output size of the pooling layer? How many parameters do we have in the pooling layer?\newline
+            {\bf Solution:}
+            \par The input data shape is
+            \[[C_{in}, D_{in}, H_{in}, W_{in}]=[10,1,32,32]\]
+            and the kernel shape is
+            \[[C_{out}, D_{kernel}, H_{kernel}, W_{kernel}] = [10,1,2,2]\]
+            Then by the formula, we have output data with a shape
+            \[[C_{out}, D_{out}, H_{out}, W_{out}]\]
+            and
+            \begin{align*}
                 D_{out} &= \frac{D_{in}+2\times pad-(D_{kernel}-1)-1}{stride}+1=1\\
                 H_{out} &= \frac{H_{in}+2\times pad-(H_{kernel}-1)-1}{stride}+1=16\\
                 W_{out} &= \frac{W_{in}+2\times pad-(W_{kernel}-1)-1}{stride}+1=16\\
+            \end{align*}
+            \par Thus, the output size is $[C_{out}, D_{out}, H_{out}, W_{out}]=[10,1,16,16]$.
+            \par Moreover, given that the max pooling layer only performs maximizing, there are no parameters in the pooling layer. Thus, the total number of parameters of the pooling layer is $0$.
+        \end{enumerate}
+        \item [2.] [Deep Learning Models]
+        \begin{enumerate}
+            \item [(a)]
+            \begin{enumerate}
+                \setlength\parindent{2em}
+                \item [(i.)] When $r = 1$, $\b{W}$ is exactly the eigenvector of $\b{XX}^T$ corresponding to its largest eigenvalue.\newline
+                {\bf Proof:}
+                \par When $r = 1$, we know that $\b{W}^T\b{XX}^T\b{W}$ is a scalar, which means
+                \[Tr(\b{W}^T\b{XX}^T\b{W}) = \b{W}^T\b{XX}^T\b{W}\]
+                Hence, the optimization problem can be rewritten as follows:
+                \begin{maxi*}
+                    |l|
+                        {\b{W}}{\b{W}^T\b{XX}^T\b{W}}{}{}\quad s.t.\ \b{W}^T\b{W} = 1
+                \end{maxi*}
+                Then, the Lagrangian is:
+                \begin{align*}
+                    \mathcal{L}(\b{W},\lambda) = \b{W}^T\b{XX}^T\b{W} - \lambda \b{W}^T\b{W}
+                \end{align*}
+                Taking the derivative of $\mathcal{L}$ w.r.t $\b{W}$ and setting it to $0$, we get
+                \begin{align*}
+                    2\b{XX}^T\b{W}^\star-2\lambda^\star\b{W}^\star &= 0\\
+                    &\Rightarrow\\
+                    \b{XX}^T\b{W}^\star &= \lambda^\star\b{W}^\star
+                \end{align*}
+                Thus, $\lambda^\star$ is eigenvalue of $\b{XX}^T$ and $\b{W}^\star$ is the corresponding eigenvector.
+                Moreover, since
+                \begin{align*}
+                {\b{W^\star}}
+                    ^T\b{XX}^T\b{W^\star} = \lambda^\star
+                \end{align*}
+                Therefore, we need to get the largest eigenvalue $\lambda^\star$ to maximize $\b{W}^T\b{XX}^T\b{W}$, which means $\b{W}^\star$ is the eigenvector corresponding to the largest eigenvalue.
+                \item [(ii.)]$\b{W}$ is also the solution to
+                \begin{mini*}
+                    |l|
+                        {\b{W}}{||\b{X-WW}^T\b{X}||_F^2}{}{}\quad s.t.\quad \b{W}^T\b{W}=\b{I}_r
+                \end{mini*}
+                {\bf Proof:}
+                \par Given that $|\b{P}|_F = \sqrt{Tr(\b{P}^T\b{P})}$, we get
+                \begin{align*}
+                    ||\b{X}-\b{WW}^T\b{X}||_F^2 &= Tr[(\b{X}-\b{WW}^T\b{X})^T(\b{X}-\b{WW}^T\b{X})]\\
+                    &= Tr[\b{X}^T\b{X}-\b{X}^T\b{WW}^T\b{X}-\b{X}^T\b{WW}^T\b{X}+\b{X}^T\b{WW}^T\b{WW}^T\b{X}]\\
+                    &= Tr[\b{X}^T\b{X}-\b{X}^T\b{WW}^T\b{X}]\\
+                    &= Tr(\b{X}^T\b{X})-Tr(\b{X}^T\b{WW}^T\b{X})\\
+                    &= Tr(\b{X}^T\b{X})-Tr(\b{W}^T\b{XX}^T\b{W})
+                \end{align*}
+                Since the first term of the equation has nothing to do with $\b{W}$, the optimization problem can be rewritten as follows:
+                \begin{mini*}
+                {\b{W}}{-Tr(\b{W}^T\b{XX}^T\b{W})}{}{}
+                    \quad s.t.\ \b{W}^T\b{W}=\b{I}_r
+                \end{mini*}
+                which is equivalent to the PCA problem.
+            \end{enumerate}
+            \item [(b)]
+            \begin{enumerate}
+                \item [(i.)] $\b{A}_2^\star$ can be solved from:
+                \begin{mini*}
+                    |l|
+                        {\b{A}_2}{||\b{X}-\b{A}_2\b{A}_2^\dagger \b{X}||_F^2}{}{}
+                \end{mini*}
+                \item [(ii.)] The solution $\b{W}$ from (a) can be taken as the same as $\b{A}_2^\star$.
+            \end{enumerate}
+        \end{enumerate}
+        \item [3.] [Ensemble Learning] Suppose there are $L$ independent two-class classifiers used for simple voting and the output of classifier $j\ (j = 1\cdots L)$ is denoted as $d_j$. From the point of view that the mean squared error of an estimator can be decomposed into the bias part and the variance part, explain why increasing $L$ can lead to an increase in classification accuracy.\newline
+        {\bf Proof:}
+        \par By the definition of MSE, we get
+        \begin{align*}
+            MSE(\hat{y}) &= \E[(\hat{y}-y)^2] = \E[(\hat{y}-\E[\hat{y}]+\E[\hat{y}]-y)^2]\\
+            &= \E[(\hat{y}-\E[\hat{y}])^2+2(\hat{y}-\E[\hat{y}])(\E[\hat{y}]-y)+(\E[\hat{y}]-y)^2]\\
+            &= \E[(\hat{y}-\E[\hat{y}])^2] + 2\E[(\hat{y}-\E[\hat{y}])]\E[(\E[\hat{y}]-y)] + \E[(\E[\hat{y}]-y)^2]\\
+            &= \E[(\hat{y}-\E[\hat{y}])^2] + 2(\E[\hat{y}]-\E[\hat{y}])\E[(\E[\hat{y}]-y)] + (\E[\hat{y}]-y)^2\\
+            &= \E[(\hat{y}-\E[\hat{y}])^2] + (\E[\hat{y}]-y)^2\\
+            &= \Var(\hat{y}) + \Bias^2(\hat{y},y)
         \end{align*}
-        \par Thus, the output size is $[C_{out}, D_{out}, H_{out}, W_{out}]=[10,1,16,16]$.
-        \par Moreover, given that the max pooling layer only performs maximizing, there are no parameters in the pooling layer. Thus, the total number of parameters of the pooling layer is $0$.
-    \end{enumerate}
-    \item [2.] [Deep Learning Models]
-    \begin{enumerate}
-        \item [(a)]
-        \begin{enumerate}
-	        \setlength\parindent{2em}
-            \item [(i.)] When $r = 1$, $\b{W}$ is exactly the eigenvector of $\b{XX}^T$ corresponding to its largest eigenvalue.\newline
-            {\bf Proof:}
-            \par When $r = 1$, we know that $\b{W}^T\b{XX}^T\b{W}$ is a scalar, which means 
-            \[Tr(\b{W}^T\b{XX}^T\b{W}) = \b{W}^T\b{XX}^T\b{W}\]
-            Hence, the optimization problem can be rewritten as follows:
-            \begin{maxi*}|l|
-                {\b{W}}{\b{W}^T\b{XX}^T\b{W}}{}{}\quad s.t.\ \b{W}^T\b{W} = 1
-            \end{maxi*}
-            Then, the Lagrangian is:
-            \begin{align*}
-                \mathcal{L}(\b{W},\lambda) = \b{W}^T\b{XX}^T\b{W} - \lambda \b{W}^T\b{W}
-            \end{align*}
-            Taking the derivate of $\mathcal{L}$ w.r.t $\b{W}$ and setting it to $0$, we get
-            \begin{align*}
-                2\b{XX}^T\b{W}^\star-2\lambda^\star\b{W}^\star &= 0\\
-                &\Rightarrow\\
-                \b{XX}^T\b{W}^\star &= \lambda^\star\b{W}^\star
-            \end{align*} 
-            Thus, $\lambda^\star$ is eigenvalue of $\b{XX}^T$ and $\b{W}^\star$ is the corresponding eigenvector. Moreover, since
-            \begin{align*}
-                {\b{W^\star}}^T\b{XX}^T\b{W^\star} = \lambda^\star
-            \end{align*}
-            Therefore, we need to get the largest eigenvalue $\lambda^\star$ to maximize $\b{W}^T\b{XX}^T\b{W}$, which means $\b{W}^\star$ is the eigenvector corresponding to the largest eigenvalue. 
-            \item [(ii.)]$\b{W}$ is also the solution to
-            \begin{mini*}|l|
-                {\b{W}}{||\b{X-WW}^T\b{X}||_F^2}{}{}\quad s.t.\quad \b{W}^T\b{W}=\b{I}_r
-            \end{mini*}
-            {\bf Proof:}
-            \par Given that $|\b{P}|_F = \sqrt{Tr(\b{P}^T\b{P})}$, we get 
-            \begin{align*}
-                ||\b{X}-\b{WW}^T\b{X}||_F^2 &= Tr[(\b{X}-\b{WW}^T\b{X})^T(\b{X}-\b{WW}^T\b{X})]\\
-                &= Tr[\b{X}^T\b{X}-\b{X}^T\b{WW}^T\b{X}-\b{X}^T\b{WW}^T\b{X}+\b{X}^T\b{WW}^T\b{WW}^T\b{X}]\\
-                &= Tr[\b{X}^T\b{X}-\b{X}^T\b{WW}^T\b{X}]\\
-                &= Tr(\b{X}^T\b{X})-Tr(\b{X}^T\b{WW}^T\b{X})\\
-                &= Tr(\b{X}^T\b{X})-Tr(\b{W}^T\b{XX}^T\b{W})
-            \end{align*}
-            Since the first term of the equation has nothing to do with $\b{W}$, the optimization problem can be rewritten as follows:
-            \begin{mini*}
-                {\b{W}}{-Tr(\b{W}^T\b{XX}^T\b{W})}{}{}\quad s.t.\ \b{W}^T\b{W}=\b{I}_r
-            \end{mini*}
-            which is equivalent to the PCA problem.
-        \end{enumerate}
-        \item [(b)]
-        \begin{enumerate}
-            \item [(i.)] $\b{A}_2^\star$ can be solved from:
-            \begin{mini*}|l|
-                {\b{A}_2}{||\b{X}-\b{A}_2\b{A}_2^\dagger \b{X}||_F^2}{}{}
-            \end{mini*}
-            \item [(ii.)] The solution $\b{W}$ from (a) can be taken as the same as $\b{A}_2^\star$.
-        \end{enumerate}
-    \end{enumerate}
-    \item [3.] [Ensemble Learning] Suppose there are $L$ independent two-class classifiers used for simple voting and the output of classifier $j\ (j = 1\cdots L)$ is denoted as $d_j$. From the point of view that the mean squared error of an estimator can be decomposed into the bias part and the variance part, explain why increasing $L$ can lead to an increase in classification accuracy.\newline
-    {\bf Proof:}
-    \par By the definition of MSE, we get
-    \begin{align*}
-        MSE(\hat{y}) &= \E[(\hat{y}-y)^2] = \E[(\hat{y}-\E[\hat{y}]+\E[\hat{y}]-y)^2]\\
-        &= \E[(\hat{y}-\E[\hat{y}])^2+2(\hat{y}-\E[\hat{y}])(\E[\hat{y}]-y)+(\E[\hat{y}]-y)^2]\\
-        &= \E[(\hat{y}-\E[\hat{y}])^2] + 2\E[(\hat{y}-\E[\hat{y}])]\E[(\E[\hat{y}]-y)] + \E[(\E[\hat{y}]-y)^2]\\
-        &= \E[(\hat{y}-\E[\hat{y}])^2] + 2(\E[\hat{y}]-\E[\hat{y}])\E[(\E[\hat{y}]-y)] + (\E[\hat{y}]-y)^2\\
-        &= \E[(\hat{y}-\E[\hat{y}])^2] + (\E[\hat{y}]-y)^2\\
-        &= \Var(\hat{y}) + \Bias^2(\hat{y},y)
-    \end{align*}
-    Then, for the second term of the equation above, we get
-    \begin{align*}
-        \Bias^2(\hat{y},y)&\propto \Bias(\hat{y}, y)\\
-        &= \E[\hat{y}]-y\\
-        &\propto \E[\hat{y}]\\
-        &= \E\left[\frac{1}{L}\sum_{j}d_j\right]\\
-        &\geq \frac{1}{L}\times L\min_{j}\{\E[d_j]\}\\
-        &= \min_j\{\E[d_j]\}
-    \end{align*}
-    which means that the Bias term won't change as $L$ gets larger.
-    \par As for the first term, we get
-    \begin{align*}
-        \Var(\hat{y}) &= \Var\left(\frac{1}{L}\sum_{j}d_j\right)\\
-        &= \frac{1}{L^2}\Var\left(\sum_{j}d_j\right)\\
-        &\leq \frac{1}{L^2}\times L\max_j\left(\Var(d_j)\right)\\
-        &= \frac{1}{L} \max_j\{\Var(d_j)\}
-    \end{align*}
-    which means that the Variance term will get smaller when $L$ gets larger.
-    \par In conclusion, $MSE(\hat{y})$ will get smaller as $L$ gets larger, so the classification will be more accurate. 
-    \item [4.] [Model Assessment and Selection] Suppose we carry out a $K$-fold cross-validation on a dataset
-    and obtain the classification error rates $\{p_i\}_{i=1}^K$, describe the steps of a one-sided $t$ test on testing the null
-    hypothesis $H_0$ that the classifier has error percentage $p_0$ or less at a significance level $\alpha$.
-    
+        Then, for the second term of the equation above, we get
+        \begin{align*}
+            \Bias^2(\hat{y},y)&\propto \Bias(\hat{y}, y)\\
+            &= \E[\hat{y}]-y\\
+            &\propto \E[\hat{y}]\\
+            &= \E\left[\frac{1}{L}\sum_{j}d_j\right]\\
+            &\geq \frac{1}{L}\times L\min_{j}\{\E[d_j]\}\\
+            &= \min_j\{\E[d_j]\}
+        \end{align*}
+        which means that the Bias term won't change as $L$ gets larger.
+        \par As for the first term, we get
+        \begin{align*}
+            \Var(\hat{y}) &= \Var\left(\frac{1}{L}\sum_{j}d_j\right)\\
+            &= \frac{1}{L^2}\Var\left(\sum_{j}d_j\right)\\
+            &\leq \frac{1}{L^2}\times L\max_j\left(\Var(d_j)\right)\\
+            &= \frac{1}{L} \max_j\{\Var(d_j)\}
+        \end{align*}
+        which means that the Variance term will get smaller when $L$ gets larger.
+        \par In conclusion, $MSE(\hat{y})$ will get smaller as $L$ gets larger, so the classification will be more accurate.
+        \item [4.] [Model Assessment and Selection] Suppose we carry out a $K$-fold cross-validation on a dataset
+        and obtain the classification error rates $\{p_i\}_{i=1}^K$, describe the steps of a one-sided $t$ test on testing the null
+        hypothesis $H_0$ that the classifier has error percentage $p_0$ or less at a significance level $\alpha$.
 
-\end{enumerate}
+
+    \end{enumerate}
 % \includepdfmerge{HW4-Coding.pdf,1-9}
 \end{document}
