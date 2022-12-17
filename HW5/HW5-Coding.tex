@@ -1,0 +1,1023 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{HW5-Coding}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{homework-5-convolutional-neural-network-30-points}{%
+\section{Homework 5: Convolutional neural network (30
+points)}\label{homework-5-convolutional-neural-network-30-points}}
+
+    In this part, you need to implement and train a convolutional neural
+network on the CIFAR-10 dataset with PyTorch. \#\#\# What is PyTorch?
+
+PyTorch is a system for executing dynamic computational graphs over
+Tensor objects that behave similarly as numpy ndarray. It comes with a
+powerful automatic differentiation engine that removes the need for
+manual back-propagation.
+
+\hypertarget{why}{%
+\subsubsection{Why?}\label{why}}
+
+\begin{itemize}
+\tightlist
+\item
+  Our code will now run on GPUs! Much faster training. When using a
+  framework like PyTorch or TensorFlow you can harness the power of the
+  GPU for your own custom neural network architectures without having to
+  write CUDA code directly (which is beyond the scope of this class).
+\item
+  We want you to be ready to use one of these frameworks for your
+  project so you can experiment more efficiently than if you were
+  writing every feature you want to use by hand.
+\item
+  We want you to stand on the shoulders of giants! TensorFlow and
+  PyTorch are both excellent frameworks that will make your lives a lot
+  easier, and now that you understand their guts, you are free to use
+  them :)
+\item
+  We want you to be exposed to the sort of deep learning code you might
+  run into in academia or industry. \#\# How can I learn PyTorch?
+\end{itemize}
+
+Justin Johnson has made an excellent
+\href{https://github.com/jcjohnson/pytorch-examples}{tutorial} for
+PyTorch.
+
+You can also find the detailed
+\href{http://pytorch.org/docs/stable/index.html}{API doc} here. If you
+have other questions that are not addressed by the API docs, the
+\href{https://discuss.pytorch.org/}{PyTorch forum} is a much better
+place to ask than StackOverflow.
+
+    Install PyTorch and Skorch.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} !pip install \PYZhy{}q torch skorch torchvision torchtext}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{sklearn}
+\PY{k+kn}{import} \PY{n+nn}{skorch}
+\PY{k+kn}{import} \PY{n+nn}{torch}
+\PY{k+kn}{import} \PY{n+nn}{torch}\PY{n+nn}{.}\PY{n+nn}{nn} \PY{k}{as} \PY{n+nn}{nn}
+\PY{k+kn}{import} \PY{n+nn}{torchvision}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k}{import} \PY{n}{pyplot} \PY{k}{as} \PY{n}{plt}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{tensor-operations-5-points}{%
+\subsection{0. Tensor Operations (5
+points)}\label{tensor-operations-5-points}}
+
+Tensor operations are important in deep learning models. In this part,
+you are required to get famaliar to some common tensor operations in
+PyTorch.
+
+    \hypertarget{tensor-squeezing-unsqueezing-and-viewing}{%
+\subsubsection{1) Tensor squeezing, unsqueezing and
+viewing}\label{tensor-squeezing-unsqueezing-and-viewing}}
+
+    Tensor squeezing, unsqueezing and viewing are important methods to
+change the dimension of a Tensor, and the corresponding functions are
+\href{https://pytorch.org/docs/stable/torch.html\#torch.squeeze}{torch.squeeze},
+\href{https://pytorch.org/docs/stable/torch.html\#torch.unsqueeze}{torch.unsqueeze}
+and
+\href{https://pytorch.org/docs/stable/tensors.html\#torch.Tensor.view}{torch.Tensor.view}.
+Please read the documents of the functions, and finish the following
+practice.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} x is a tensor with size being (3, 2)}
+\PY{n}{x} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Add two new dimensions to x by using the function torch.unsqueeze, so that the size of x becomes (3, 1, 2, 1).}
+\PY{n}{x} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{x} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Remove the two dimensions justed added by using the function torch.squeeze, and change the size of x back to (3, 2).}
+\PY{n}{x} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{squeeze}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} x is now a two\PYZhy{}dimensional tensor, or in other words a matrix. Now use the function torch.Tensor.view and change x to a one\PYZhy{}dimensional vector with size being (6).}
+\PY{n}{x} \PY{o}{=} \PY{n}{x}\PY{o}{.}\PY{n}{view}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+torch.Size([3, 2])
+torch.Size([3, 1, 2, 1])
+torch.Size([3, 2])
+torch.Size([6])
+    \end{Verbatim}
+
+    \hypertarget{tensor-concatenation-and-stack}{%
+\subsubsection{2) Tensor concatenation and
+stack}\label{tensor-concatenation-and-stack}}
+
+    Tensor concatenation and stack are operations to combine small tensors
+into big tensors. The corresponding functions are
+\href{https://pytorch.org/docs/stable/torch.html\#torch.cat}{torch.cat}
+and
+\href{https://pytorch.org/docs/stable/torch.html\#torch.stack}{torch.stack}.
+Please read the documents of the functions, and finish the following
+practice.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} x is a tensor with size being (3, 2)}
+\PY{n}{x} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} y is a tensor with size being (3, 2)}
+\PY{n}{y} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{(}\PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{6}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Our goal is to generate a tensor z with size as (2, 3, 2), and z[0,:,:] = x, z[1,:,:] = y.}
+\PY{n}{z} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{stack}\PY{p}{(}\PY{p}{[}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Use torch.stack to generate such a z}
+\PY{k}{pass}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{z}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Use torch.cat and torch.unsqueeze to generate such a z}
+\PY{k}{pass}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{z}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+tensor([[1., 2.],
+        [3., 4.],
+        [5., 6.]])
+tensor([[-1., -2.],
+        [-3., -4.],
+        [-5., -6.]])
+    \end{Verbatim}
+
+    \hypertarget{tensor-expansion}{%
+\subsubsection{3) Tensor expansion}\label{tensor-expansion}}
+
+    Tensor expansion is to expand a tensor into a larger tensor along
+singleton dimensions. The corresponding functions are
+\href{https://pytorch.org/docs/stable/tensors.html\#torch.Tensor.expand}{torch.Tensor.expand}
+and
+\href{https://pytorch.org/docs/stable/tensors.html\#torch.Tensor.expand_as}{torch.Tensor.expand\_as}.
+Please read the documents of the functions, and finish the following
+practice.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} x is a tensor with size being (3)}
+\PY{n}{x} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Our goal is to generate a tensor z with size (2, 3), so that z[0,:,:] = x, z[1,:,:] = x.}
+
+\PY{c+c1}{\PYZsh{} [TO DO]}
+\PY{c+c1}{\PYZsh{} Change the size of x into (1, 3) by using torch.unsqueeze.}
+\PY{n}{x} \PY{o}{=} \PY{n}{x}\PY{o}{.}\PY{n}{unsqueeze}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} [TO DO]}
+\PY{c+c1}{\PYZsh{} Then expand the new tensor to the target tensor by using torch.Tensor.expand.}
+\PY{n}{z} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{o}{.}\PY{n}{expand}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{z}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+torch.Size([1, 3])
+torch.Size([2, 3])
+    \end{Verbatim}
+
+    \hypertarget{tensor-reduction-in-a-given-dimension}{%
+\subsubsection{4) Tensor reduction in a given
+dimension}\label{tensor-reduction-in-a-given-dimension}}
+
+    In deep learning, we often need to compute the mean/sum/max/min value in
+a given dimension of a tensor. Please read the document of
+\href{https://pytorch.org/docs/stable/torch.html\#torch.mean}{torch.mean},
+\href{https://pytorch.org/docs/stable/torch.html\#torch.sum}{torch.sum},
+\href{https://pytorch.org/docs/stable/torch.html\#torch.max}{torch.max},
+\href{https://pytorch.org/docs/stable/torch.html\#torch.min}{torch.min},
+\href{https://pytorch.org/docs/stable/torch.html\#torch.topk}{torch.topk},
+and finish the following practice.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} x is a random tensor with size being (10, 50)}
+\PY{n}{x} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compute the mean value for each row of x.}
+\PY{c+c1}{\PYZsh{} You need to generate a tensor x\PYZus{}mean of size (10), and x\PYZus{}mean[k, :] is the mean value of the k\PYZhy{}th row of x.}
+\PY{n}{x\PYZus{}mean} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x\PYZus{}mean}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compute the sum value for each row of x.}
+\PY{c+c1}{\PYZsh{} You need to generate a tensor x\PYZus{}sum of size (10).}
+\PY{n}{x\PYZus{}sum} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x\PYZus{}sum}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compute the max value for each row of x.}
+\PY{c+c1}{\PYZsh{} You need to generate a tensor x\PYZus{}max of size (10).}
+\PY{n}{x\PYZus{}max}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x\PYZus{}max}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compute the min value for each row of x.}
+\PY{c+c1}{\PYZsh{} You need to generate a tensor x\PYZus{}min of size (10).}
+\PY{n}{x\PYZus{}min}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x\PYZus{}min}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compute the top\PYZhy{}5 values for each row of x.}
+\PY{c+c1}{\PYZsh{} You need to generate a tensor x\PYZus{}mean of size (10, 5), and x\PYZus{}top[k, :] is the top\PYZhy{}5 values of each row in x.}
+\PY{n}{x\PYZus{}mean\PYZus{}xtop}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{topk}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{x\PYZus{}mean\PYZus{}xtop}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+tensor(0.0931)
+torch.Size([10])
+torch.Size([10])
+torch.Size([10])
+torch.Size([10, 5])
+    \end{Verbatim}
+
+    \hypertarget{convolutional-neural-networks}{%
+\subsection{Convolutional Neural
+Networks}\label{convolutional-neural-networks}}
+
+    Implement a convolutional neural network for image classification on
+CIFAR-10 dataset.
+
+CIFAR-10 is an image dataset of 10 categories. Each image has a size of
+32x32 pixels. The following code will download the dataset, and split it
+into \texttt{train} and \texttt{test}. For this question, we use the
+default validation split generated by Skorch.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train} \PY{o}{=} \PY{n}{torchvision}\PY{o}{.}\PY{n}{datasets}\PY{o}{.}\PY{n}{CIFAR10}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{./data}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{train}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{download}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{test} \PY{o}{=} \PY{n}{torchvision}\PY{o}{.}\PY{n}{datasets}\PY{o}{.}\PY{n}{CIFAR10}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{./data}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{train}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{download}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Files already downloaded and verified
+Files already downloaded and verified
+    \end{Verbatim}
+
+    The following code visualizes some samples in the dataset. You may use
+it to debug your model if necessary.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{plot}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{labels}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{num\PYZus{}sample}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{:}
+    \PY{n}{n} \PY{o}{=} \PY{n+nb}{min}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{,} \PY{n}{num\PYZus{}sample}\PY{p}{)}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n}\PY{p}{,} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{data}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gray}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{yticks}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{)}
+        \PY{k}{if} \PY{n}{labels} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+            \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{n}{labels}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+
+
+\PY{n}{train}\PY{o}{.}\PY{n}{labels} \PY{o}{=} \PY{p}{[}\PY{n}{train}\PY{o}{.}\PY{n}{classes}\PY{p}{[}\PY{n}{target}\PY{p}{]} \PY{k}{for} \PY{n}{target} \PY{o+ow}{in} \PY{n}{train}\PY{o}{.}\PY{n}{targets}\PY{p}{]}
+\PY{n}{plot}\PY{p}{(}\PY{n}{train}\PY{o}{.}\PY{n}{data}\PY{p}{,} \PY{n}{train}\PY{o}{.}\PY{n}{labels}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{HW5-Coding_files/HW5-Coding_22_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{basic-cnn-implementation}{%
+\subsubsection{1) Basic CNN
+implementation}\label{basic-cnn-implementation}}
+
+    Consider a basic CNN model
+
+\begin{itemize}
+\tightlist
+\item
+  It has 3 convolutional layers, followed by a linear layer.
+\item
+  Each convolutional layer has a kernel size of 3, a padding of 1.
+\item
+  ReLU activation is applied on every hidden layer.
+\end{itemize}
+
+Please implement this model in the following section. The
+hyperparameters is then be tuned and you need to fill the results in the
+table.
+
+    \hypertarget{a-implement-convolutional-layers-10-points}{%
+\paragraph{a) Implement convolutional layers (10
+Points)}\label{a-implement-convolutional-layers-10-points}}
+
+    Implement the initialization function and the forward function of the
+CNN.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{CNN}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{channels}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{super}\PY{p}{(}\PY{n}{CNN}\PY{p}{,} \PY{n+nb+bp}{self}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} implement parameter definitions here}
+        \PY{c+c1}{\PYZsh{} *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}1} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{(}\PY{n}{in\PYZus{}channels}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{out\PYZus{}channels}\PY{o}{=}\PY{n}{channels}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}2} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{(}\PY{n}{in\PYZus{}channels}\PY{o}{=}\PY{n}{channels}\PY{p}{,} \PY{n}{out\PYZus{}channels}\PY{o}{=}\PY{n}{channels}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}3} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{(}\PY{n}{in\PYZus{}channels}\PY{o}{=}\PY{n}{channels}\PY{p}{,} \PY{n}{out\PYZus{}channels}\PY{o}{=}\PY{n}{channels}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{ReLU}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{linear} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{in\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{32} \PY{o}{*} \PY{l+m+mi}{32} \PY{o}{*} \PY{n}{channels}\PY{p}{,} \PY{n}{out\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****}
+
+    \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{images}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} implement the forward function here}
+        \PY{c+c1}{\PYZsh{} *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****}
+        \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}1}\PY{p}{(}\PY{n}{images}\PY{p}{)}\PY{p}{)}
+        \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}2}\PY{p}{(}\PY{n}{out}\PY{p}{)}\PY{p}{)}
+        \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}3}\PY{p}{(}\PY{n}{out}\PY{p}{)}\PY{p}{)}
+        \PY{n}{out} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{Flatten}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+        \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{linear}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****}
+        \PY{k}{return} \PY{n}{out}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{b-tune-hyperparameters}{%
+\paragraph{b) Tune hyperparameters}\label{b-tune-hyperparameters}}
+
+    Train the CNN model on CIFAR-10 dataset. We can tune the number of
+channels, optimizer, learning rate and the number of epochs for best
+validation accuracy.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} implement hyperparameters here}
+
+\PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{1e\PYZhy{}4}
+\PY{n}{optimize} \PY{o}{=}  \PY{n}{torch}\PY{o}{.}\PY{n}{optim}\PY{o}{.}\PY{n}{Adam}
+\PY{n}{channel} \PY{o}{=} \PY{l+m+mi}{64}
+
+\PY{n}{train\PYZus{}data\PYZus{}normalized} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{(}\PY{n}{train}\PY{o}{.}\PY{n}{data} \PY{o}{/} \PY{l+m+mi}{255}\PY{p}{)}
+\PY{n}{train\PYZus{}data\PYZus{}normalized} \PY{o}{=} \PY{n}{train\PYZus{}data\PYZus{}normalized}\PY{o}{.}\PY{n}{permute}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{f}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The channel was }\PY{l+s+si}{\PYZob{}channel\PYZcb{}}\PY{l+s+s1}{, the learning rate was }\PY{l+s+si}{\PYZob{}learning\PYZus{}rate\PYZcb{}}\PY{l+s+s1}{ and the optimizer was }\PY{l+s+s1}{\PYZob{}}\PY{l+s+s1}{str(optimize)\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{cnn} \PY{o}{=} \PY{n}{CNN}\PY{p}{(}\PY{n}{channels}\PY{o}{=}\PY{n}{channel}\PY{p}{)}
+\PY{n}{model} \PY{o}{=} \PY{n}{skorch}\PY{o}{.}\PY{n}{NeuralNetClassifier}\PY{p}{(}\PY{n}{cnn}\PY{p}{,} \PY{n}{criterion}\PY{o}{=}\PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{CrossEntropyLoss}\PY{p}{,}
+                                   \PY{n}{device}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cuda}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                                   \PY{n}{optimizer}\PY{o}{=}\PY{n}{optimize}\PY{p}{,}
+                                   \PY{c+c1}{\PYZsh{} optimizer\PYZus{}\PYZus{}momentum=0.90,}
+                                   \PY{n}{lr}\PY{o}{=}\PY{n}{learning\PYZus{}rate}\PY{p}{,}
+                                   \PY{n}{max\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{,}
+                                   \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{64}\PY{p}{,}
+                                   \PY{n}{callbacks}\PY{o}{=}\PY{p}{[}\PY{n}{skorch}\PY{o}{.}\PY{n}{callbacks}\PY{o}{.}\PY{n}{EarlyStopping}\PY{p}{(}\PY{n}{lower\PYZus{}is\PYZus{}better}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} implement input normalization \PYZam{} type cast here}
+\PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{train\PYZus{}data\PYZus{}normalized}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{train}\PY{o}{.}\PY{n}{targets}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The channel was 64, the learning rate was 0.0001 and the optimizer was <class
+'torch.optim.adam.Adam'>
+  epoch    train\_loss    valid\_acc    valid\_loss      dur
+-------  ------------  -----------  ------------  -------
+      1        \textcolor{ansi-cyan}{1.6819}       \textcolor{ansi-green}{0.5020}        \textcolor{ansi-magenta}{1.4174}
+10.9766
+      2        \textcolor{ansi-cyan}{1.3244}       \textcolor{ansi-green}{0.5650}        \textcolor{ansi-magenta}{1.2413}
+9.9119
+      3        \textcolor{ansi-cyan}{1.1825}       \textcolor{ansi-green}{0.5860}        \textcolor{ansi-magenta}{1.1763}
+9.9063
+      4        \textcolor{ansi-cyan}{1.0709}       \textcolor{ansi-green}{0.6101}        \textcolor{ansi-magenta}{1.1131}
+9.9199
+      5        \textcolor{ansi-cyan}{0.9765}       \textcolor{ansi-green}{0.6264}        \textcolor{ansi-magenta}{1.0658}
+9.9347
+      6        \textcolor{ansi-cyan}{0.8994}       \textcolor{ansi-green}{0.6411}        \textcolor{ansi-magenta}{1.0356}
+10.7903
+      7        \textcolor{ansi-cyan}{0.8355}       \textcolor{ansi-green}{0.6520}        \textcolor{ansi-magenta}{1.0182}
+9.8990
+      8        \textcolor{ansi-cyan}{0.7797}       \textcolor{ansi-green}{0.6573}        \textcolor{ansi-magenta}{1.0091}
+9.8756
+      9        \textcolor{ansi-cyan}{0.7293}       \textcolor{ansi-green}{0.6609}        \textcolor{ansi-magenta}{1.0072}
+9.9047
+     10        \textcolor{ansi-cyan}{0.6823}       \textcolor{ansi-green}{0.6622}        1.0101  10.0021
+     11        \textcolor{ansi-cyan}{0.6373}       \textcolor{ansi-green}{0.6630}        1.0206  9.8481
+     12        \textcolor{ansi-cyan}{0.5937}       0.6618        1.0378  9.8932
+     13        \textcolor{ansi-cyan}{0.5516}       0.6587        1.0656  9.8847
+Stopping since valid\_loss has not improved in the last 5 epochs.
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<class 'skorch.classifier.NeuralNetClassifier'>[initialized](
+  module\_=CNN(
+    (conv\_1): Conv2d(3, 64, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv\_2): Conv2d(64, 64, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv\_3): Conv2d(64, 64, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (relu): ReLU()
+    (linear): Linear(in\_features=65536, out\_features=10, bias=True)
+  ),
+)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Write down \textbf{validation accuracy} of your model under different
+hyperparameter settings. Note the validation set is automatically split
+by Skorch during \texttt{model.fit()}.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\#channel for each layer ~optimizer & Adam\tabularnewline
+\midrule
+\endhead
+(64, 64, 64) & 0.6630\tabularnewline
+\bottomrule
+\end{longtable}
+
+    \hypertarget{full-cnn-implementation-10-points}{%
+\subsubsection{2) Full CNN implementation (10
+points)}\label{full-cnn-implementation-10-points}}
+
+    Based on the CNN in the previous question, implement a full CNN model
+with max pooling layer.
+
+\begin{itemize}
+\tightlist
+\item
+  Add a max pooling layer after each convolutional layer.
+\item
+  Each max pooling layer has a kernel size of 2 and a stride of 2.
+\end{itemize}
+
+    
+
+    \hypertarget{a-implement-max-pooling-layers}{%
+\paragraph{a) Implement max pooling
+layers}\label{a-implement-max-pooling-layers}}
+
+    Copy the CNN implementation in previous question. Implement max pooling
+layers.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{CNN\PYZus{}MaxPool}\PY{p}{(}\PY{n}{nn}\PY{o}{.}\PY{n}{Module}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{channels}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{super}\PY{p}{(}\PY{n}{CNN\PYZus{}MaxPool}\PY{p}{,} \PY{n+nb+bp}{self}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} implement parameter definitions here}
+        \PY{c+c1}{\PYZsh{} *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****}
+        \PY{k}{assert} \PY{n+nb}{len}\PY{p}{(}\PY{n}{channels}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{1} \PY{o+ow}{or} \PY{n+nb}{len}\PY{p}{(}
+            \PY{n}{channels}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{3}\PY{p}{,} \PY{n}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{invalid channels number, expect 1 or 3 but get }\PY{l+s+s2}{\PYZob{}}\PY{l+s+s2}{len(channels)\PYZcb{} instead.}\PY{l+s+s2}{\PYZdq{}}
+        \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{channels}\PY{p}{)} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n}{CHANNELS} \PY{o}{=} \PY{n}{channels} \PY{o}{*} \PY{l+m+mi}{3}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{CHANNELS} \PY{o}{=} \PY{n}{channels}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}1} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{(}\PY{n}{in\PYZus{}channels}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{out\PYZus{}channels}\PY{o}{=}\PY{n}{CHANNELS}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}2} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{(}\PY{n}{in\PYZus{}channels}\PY{o}{=}\PY{n}{CHANNELS}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{out\PYZus{}channels}\PY{o}{=}\PY{n}{CHANNELS}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}3} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{Conv2d}\PY{p}{(}\PY{n}{in\PYZus{}channels}\PY{o}{=}\PY{n}{CHANNELS}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{out\PYZus{}channels}\PY{o}{=}\PY{n}{CHANNELS}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{ReLU}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}pool} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{MaxPool2d}\PY{p}{(}\PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{stride}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{linear} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{Linear}\PY{p}{(}\PY{n}{in\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{4} \PY{o}{*} \PY{l+m+mi}{4} \PY{o}{*} \PY{n}{CHANNELS}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{out\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****}
+
+    \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{images}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{} implement the forward function here}
+        \PY{c+c1}{\PYZsh{} *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****}
+        \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}pool}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}1}\PY{p}{(}\PY{n}{images}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}pool}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}2}\PY{p}{(}\PY{n}{out}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}pool}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{conv\PYZus{}3}\PY{p}{(}\PY{n}{out}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{n}{out} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{Flatten}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+        \PY{n}{out} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{linear}\PY{p}{(}\PY{n}{out}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****}
+        \PY{k}{return} \PY{n}{out}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{b-tune-hyperparameters}{%
+\paragraph{b) Tune hyperparameters}\label{b-tune-hyperparameters}}
+
+    Based on best optimizer found in the previous problem, we can tune the
+number of channels and learning rate for best validation accuracy.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{channel} \PY{o}{=} \PY{l+m+mi}{64}
+\PY{n}{train\PYZus{}data\PYZus{}normalized} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{(}\PY{n}{train}\PY{o}{.}\PY{n}{data} \PY{o}{/} \PY{l+m+mi}{255}\PY{p}{)}
+\PY{n}{train\PYZus{}data\PYZus{}normalized} \PY{o}{=} \PY{n}{train\PYZus{}data\PYZus{}normalized}\PY{o}{.}\PY{n}{permute}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{cnn\PYZus{}max\PYZus{}pool\PYZus{}same\PYZus{}channels} \PY{o}{=} \PY{n}{CNN\PYZus{}MaxPool}\PY{p}{(}\PY{n}{channels}\PY{o}{=}\PY{p}{[}\PY{n}{channel}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} cnn\PYZus{}max\PYZus{}pool\PYZus{}diff\PYZus{}channels = CNN\PYZus{}MaxPool(channels=[c, 2 * c, 4 * c])}
+\PY{n}{model} \PY{o}{=} \PY{n}{skorch}\PY{o}{.}\PY{n}{NeuralNetClassifier}\PY{p}{(}\PY{n}{cnn\PYZus{}max\PYZus{}pool\PYZus{}same\PYZus{}channels}\PY{p}{,} \PY{n}{criterion}\PY{o}{=}\PY{n}{torch}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{CrossEntropyLoss}\PY{p}{,}
+                                                 \PY{n}{device}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cuda}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+                                                 \PY{n}{optimizer}\PY{o}{=}\PY{n}{torch}\PY{o}{.}\PY{n}{optim}\PY{o}{.}\PY{n}{Adam}\PY{p}{,}
+                                                 \PY{n}{lr}\PY{o}{=}\PY{l+m+mf}{0.0001}\PY{p}{,}
+                                                 \PY{n}{max\PYZus{}epochs}\PY{o}{=}\PY{l+m+mi}{25}\PY{p}{,}
+                                                 \PY{n}{batch\PYZus{}size}\PY{o}{=}\PY{l+m+mi}{64}\PY{p}{,}
+                                                 \PY{n}{callbacks}\PY{o}{=}\PY{p}{[}\PY{n}{skorch}\PY{o}{.}\PY{n}{callbacks}\PY{o}{.}\PY{n}{EarlyStopping}\PY{p}{(}\PY{n}{lower\PYZus{}is\PYZus{}better}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{]}\PY{p}{,} \PY{p}{)}
+\PY{c+c1}{\PYZsh{} implement input normalization \PYZam{} type cast here}
+\PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{train\PYZus{}data\PYZus{}normalized}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{asarray}\PY{p}{(}\PY{n}{train}\PY{o}{.}\PY{n}{targets}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+  epoch    train\_loss    valid\_acc    valid\_loss     dur
+-------  ------------  -----------  ------------  ------
+      1        \textcolor{ansi-cyan}{1.9269}       \textcolor{ansi-green}{0.4119}        \textcolor{ansi-magenta}{1.6712}
+3.4668
+      2        \textcolor{ansi-cyan}{1.6067}       \textcolor{ansi-green}{0.4523}        \textcolor{ansi-magenta}{1.5397}
+3.5056
+      3        \textcolor{ansi-cyan}{1.4981}       \textcolor{ansi-green}{0.4770}        \textcolor{ansi-magenta}{1.4602}
+3.6588
+      4        \textcolor{ansi-cyan}{1.4211}       \textcolor{ansi-green}{0.5048}        \textcolor{ansi-magenta}{1.3998}
+3.5595
+      5        \textcolor{ansi-cyan}{1.3675}       \textcolor{ansi-green}{0.5217}        \textcolor{ansi-magenta}{1.3588}
+4.0562
+      6        \textcolor{ansi-cyan}{1.3265}       \textcolor{ansi-green}{0.5365}        \textcolor{ansi-magenta}{1.3244}
+3.6377
+      7        \textcolor{ansi-cyan}{1.2920}       \textcolor{ansi-green}{0.5464}        \textcolor{ansi-magenta}{1.2912}
+3.7853
+      8        \textcolor{ansi-cyan}{1.2612}       \textcolor{ansi-green}{0.5584}        \textcolor{ansi-magenta}{1.2617}
+3.8943
+      9        \textcolor{ansi-cyan}{1.2331}       \textcolor{ansi-green}{0.5683}        \textcolor{ansi-magenta}{1.2352}
+3.5465
+     10        \textcolor{ansi-cyan}{1.2072}       \textcolor{ansi-green}{0.5769}        \textcolor{ansi-magenta}{1.2106}
+3.6510
+     11        \textcolor{ansi-cyan}{1.1830}       \textcolor{ansi-green}{0.5853}        \textcolor{ansi-magenta}{1.1882}
+3.5429
+     12        \textcolor{ansi-cyan}{1.1600}       \textcolor{ansi-green}{0.5929}        \textcolor{ansi-magenta}{1.1679}
+3.4975
+     13        \textcolor{ansi-cyan}{1.1383}       \textcolor{ansi-green}{0.5988}        \textcolor{ansi-magenta}{1.1495}
+3.4832
+     14        \textcolor{ansi-cyan}{1.1177}       \textcolor{ansi-green}{0.6024}        \textcolor{ansi-magenta}{1.1318}
+3.4758
+     15        \textcolor{ansi-cyan}{1.0980}       \textcolor{ansi-green}{0.6076}        \textcolor{ansi-magenta}{1.1161}
+3.4716
+     16        \textcolor{ansi-cyan}{1.0791}       \textcolor{ansi-green}{0.6131}        \textcolor{ansi-magenta}{1.1012}
+3.4695
+     17        \textcolor{ansi-cyan}{1.0612}       \textcolor{ansi-green}{0.6193}        \textcolor{ansi-magenta}{1.0876}
+3.4775
+     18        \textcolor{ansi-cyan}{1.0441}       \textcolor{ansi-green}{0.6215}        \textcolor{ansi-magenta}{1.0742}
+4.2113
+     19        \textcolor{ansi-cyan}{1.0279}       \textcolor{ansi-green}{0.6265}        \textcolor{ansi-magenta}{1.0615}
+4.5485
+     20        \textcolor{ansi-cyan}{1.0126}       \textcolor{ansi-green}{0.6287}        \textcolor{ansi-magenta}{1.0497}
+3.6776
+     21        \textcolor{ansi-cyan}{0.9979}       \textcolor{ansi-green}{0.6339}        \textcolor{ansi-magenta}{1.0389}
+4.7526
+     22        \textcolor{ansi-cyan}{0.9839}       \textcolor{ansi-green}{0.6370}        \textcolor{ansi-magenta}{1.0286}
+4.3440
+     23        \textcolor{ansi-cyan}{0.9706}       \textcolor{ansi-green}{0.6396}        \textcolor{ansi-magenta}{1.0188}
+4.2747
+     24        \textcolor{ansi-cyan}{0.9578}       \textcolor{ansi-green}{0.6434}        \textcolor{ansi-magenta}{1.0091}
+4.2250
+     25        \textcolor{ansi-cyan}{0.9456}       \textcolor{ansi-green}{0.6470}        \textcolor{ansi-magenta}{1.0014}
+4.2377
+    \end{Verbatim}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<class 'skorch.classifier.NeuralNetClassifier'>[initialized](
+  module\_=CNN\_MaxPool(
+    (conv\_1): Conv2d(3, 64, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv\_2): Conv2d(64, 64, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv\_3): Conv2d(64, 64, kernel\_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (relu): ReLU()
+    (max\_pool): MaxPool2d(kernel\_size=2, stride=2, padding=0, dilation=1,
+ceil\_mode=False)
+    (linear): Linear(in\_features=1024, out\_features=10, bias=True)
+  ),
+)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Write down the \textbf{validation accuracy} of the model under different
+hyperparameter settings.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\#channel for each layer & validation accuracy\tabularnewline
+\midrule
+\endhead
+(64, 64, 64) & 0.6470\tabularnewline
+\bottomrule
+\end{longtable}
+
+    For the best model you have, test it on the test set.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} implement the same input normalization \PYZam{} type cast here}
+\PY{n}{test\PYZus{}data\PYZus{}normalized} \PY{o}{=} \PY{n}{torch}\PY{o}{.}\PY{n}{Tensor}\PY{p}{(}\PY{n}{test}\PY{o}{.}\PY{n}{data} \PY{o}{/} \PY{l+m+mi}{255}\PY{p}{)}
+\PY{n}{test\PYZus{}data\PYZus{}normalized} \PY{o}{=} \PY{n}{test\PYZus{}data\PYZus{}normalized}\PY{o}{.}\PY{n}{permute}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{test}\PY{o}{.}\PY{n}{predictions} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{test\PYZus{}data\PYZus{}normalized}\PY{p}{)}
+\PY{n}{sklearn}\PY{o}{.}\PY{n}{metrics}\PY{o}{.}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{test}\PY{o}{.}\PY{n}{targets}\PY{p}{,} \PY{n}{test}\PY{o}{.}\PY{n}{predictions}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.654
+\end{Verbatim}
+\end{tcolorbox}
+        
+    How much \textbf{test accuracy} do you get? What can you conclude for
+the design of CNN structure and tuning of hyperparameters? (5 points)
+
+\textbf{Your Answer:} 0.654
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

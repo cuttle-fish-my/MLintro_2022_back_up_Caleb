@@ -128,7 +128,7 @@
             \end{align*}
             \par Thus, the output size is $[C_{out}, D_{out}, H_{out}, W_{out}]=[10,1,32,32]$
             \par Moreover, the total number of parameters is
-            \[\#\{parameters\}=\#\{parameters\ in\ kernel\}+\#\{biases\} = 5\times 5\times 1\times 10 + 10=260\]
+            \[\#\{parameters\}=\#\{parameters\ in\ kernel\}+\#\{biases\} = 5\times 5\times 3\times 10 + 10=760\]
             \item [(b)] The convolution layer is followed by a max pooling layer with $2 \times 2$ (width, height) filter and stride = 2. What is the output size of the pooling layer? How many parameters do we have in the pooling layer?\newline
             {\bf Solution:}
             \par The input data shape is
@@ -244,5 +244,5 @@
 
 
     \end{enumerate}
-% \includepdfmerge{HW4-Coding.pdf,1-9}
+    \includepdfmerge{./out/HW5-Coding.pdf,1-11}
 \end{document}
