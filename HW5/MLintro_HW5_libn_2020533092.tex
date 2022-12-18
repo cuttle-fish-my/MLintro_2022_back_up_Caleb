@@ -205,6 +205,37 @@
                     |l|
                         {\b{A}_2}{||\b{X}-\b{A}_2\b{A}_2^\dagger \b{X}||_F^2}{}{}
                 \end{mini*}
+                {\bf Proof:}
+                \par First, we consider the original problem:
+                \begin{align*}
+                    ||\b{X-\hat{X}}||_F^2 &= ||\b{X}-\b{A}_2\b{H}-\b{b}_2\b{1}^T||_F^2\\
+                \end{align*}
+                By setting the derivative w.r.t. $\b{b}_2$ to 0, we get
+                \begin{align*}
+                    \b{b}_2 &= \frac{1}{M}(\b{X}-\b{A}_2\b{H})\b{1} 
+                \end{align*}
+                Then, insert the result back into the original problem and we get
+                \begin{align*}
+                    ||\b{X}-\b{A}_2\b{H}-\b{b}_2\b{1}^T||_F^2 &= ||\b{X}-\b{A}_2\b{H}-\frac{1}{M}(\b{X}-\b{A}_2\b{H})\b{11}^T||_F^2\\
+                    &= ||\b{X}(\b{I}-\frac{\b{11}^T}{M})-\b{A}_2\b{H}(\b{I}-\frac{\b{11}^T}{M})||_F^2\\
+                    &\equiv ||\b{X'}-\b{A}_2\b{H'}||_F^2\\
+                    &= ||\b{X'}-\b{A}_2\b{A}_1\b{X'}-\b{A}_2\b{b}_1\b{1}^T\left(\b{I}-\frac{\b{11}^T}{M}\right)||_F^2\\
+                    &= ||\b{X'}-\b{A}_2\b{A}_1\b{X'}-\b{A}_2\b{b}_1\left(\b{1}^T-\frac{\b{1}^T\b{11}^T}{M}\right)||_F^2\\
+                    &= ||\b{X'}-\b{A}_2\b{A}_1\b{X'}-\b{A}_2\b{b}_1\left(\b{1}^T-\frac{M\b{1}^T}{M}\right)||_F^2\\
+                    &= ||\b{X'}-\b{A}_2\b{A}_1\b{X'}||_F^2\\
+                \end{align*}
+                Thus, the original optimization problem is equivalent to the following problem:
+                \begin{mini*} |l|
+                    {\b{A}_1, \b{A}_2}{||\b{X'}-\b{A}_2\b{A}_1\b{X'}||_F^2}{}{}
+                \end{mini*}
+                and is also equivalent to 
+                \begin{mini*} |l|
+                    {\b{A}_1, \b{A}_2}{||\b{X}-\b{A}_2\b{A}_1\b{X}||_F^2}{}{}
+                \end{mini*}
+                Given that $\b{A}^\dagger = \arg \min_{\b{A}_1}||\b{X}-\b{A}_2\b{A}_1\b{X}||_F^2$, we know that the problem can be further converted as follows:
+                \begin{mini*} |l|
+                    {\b{A}_2}{||\b{X}-\b{A}_2\b{A}_2^\dagger\b{X}||_F^2}{}{}
+                \end{mini*}
                 \item [(ii.)] The solution $\b{W}$ from (a) can be taken as the same as $\b{A}_2^\star$.
             \end{enumerate}
         \end{enumerate}
@@ -240,8 +271,21 @@
         \par In conclusion, $MSE(\hat{y})$ will get smaller as $L$ gets larger, so the classification will be more accurate.
         \item [4.] [Model Assessment and Selection] Suppose we carry out a $K$-fold cross-validation on a dataset
         and obtain the classification error rates $\{p_i\}_{i=1}^K$, describe the steps of a one-sided $t$ test on testing the null
-        hypothesis $H_0$ that the classifier has error percentage $p_0$ or less at a significance level $\alpha$.
-
+        hypothesis $H_0$ that the classifier has error percentage $p_0$ or less at a significance level $\alpha$.\newline
+        {\bf Solution:}
+        \par Assume that $\{p_i\}_{i=1}^K$ follow normal distribution and define
+        \[q_i = p_i - p_0\]
+        where $q_i$ also follows the normal distribution but with mean $\mu$.
+        After that, we define the null hypothesis and alternative hypothesis as follows:
+        \begin{align*}
+            H_0:\ \mu \leq \mu_0=0\\
+            H_1:\ \mu > \mu_0=0
+        \end{align*}
+        Then, under the null hypothesis, we have
+        \[\sqrt{K}\frac{m-\mu_0}{S}=\frac{\sqrt{K}m}{S}\sim \tau_{K-1} \]
+        where $m = \frac{\sum_{i=1}^K q_i}{K}$ and $S^2 = \frac{\sum_{i=1}^K(q_i-m)^2}{K-1}$.
+        \par Then, we failed to reject $H_0$ at significant level $\alpha$ if
+        \[ \frac{\sqrt {K}m}{S}\in (-\infty, t_{\alpha,K-1}) \]
 
     \end{enumerate}
     \includepdfmerge{./out/HW5-Coding.pdf,1-11}
